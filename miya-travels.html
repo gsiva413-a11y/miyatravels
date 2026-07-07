@@ -1,0 +1,1124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Miya Travels — Kuwait to India Travel Experts</title>
+<link rel="icon" type="image/x-icon" href="images/favicon.ico">
+<link rel="shortcut icon" type="image/x-icon" href="images/favicon.ico">
+<link rel="apple-touch-icon" href="images/favicon.ico">
+<style>
+  :root{
+    --navy:#0c1c4e;
+    --navy-2:#1b2a6b;
+    --purple:#5b34c9;
+    --purple-2:#3d1f9e;
+    --gold:#f5c518;
+    --pink:#e6349c;
+    --blue-grad:#3a2fd6;
+    --green:#1e8e3e;
+    --red:#e5342b;
+    --lav-bg:#eeecfb;
+    --blue-bg:#e4f0fc;
+    --green-bg:#e6f6e2;
+    --ink:#12163a;
+    --muted:#6b7285;
+    --line:#e7e8f0;
+    --white:#ffffff;
+    --container:1240px;
+    font-family:'Segoe UI', Arial, sans-serif;
+  }
+  *{box-sizing:border-box; margin:0; padding:0;}
+  html{scroll-behavior:smooth;}
+  body{
+    background:var(--white);
+    color:var(--ink);
+    overflow-x:hidden;
+  }
+  a{text-decoration:none; color:inherit;}
+  ul{list-style:none;}
+  img,svg{max-width:100%;}
+  .container{width:100%; max-width:var(--container); margin:0 auto; padding:0 20px;}
+
+  /* ---------- Header ---------- */
+  header{
+    position:sticky; top:0; z-index:50;
+    background:linear-gradient(90deg, var(--navy) 0%, var(--navy-2) 100%);
+    border-bottom:1px solid rgba(255,255,255,0.1);
+  }
+  .header-inner{
+    display:flex; align-items:center; justify-content:space-between;
+    padding:12px 20px; max-width:var(--container); margin:0 auto; gap:16px;
+  }
+  .menu-btn{background:none;border:none;cursor:pointer; display:flex;}
+  .menu-btn svg{width:26px;height:26px;stroke:var(--white);}
+  .brand{display:flex; align-items:center; gap:10px;}
+  .brand-logo-img{height:40px; width:auto; flex-shrink:0; display:block;}
+  .footer-logo-chip{
+    display:flex; align-items:center; justify-content:center; flex-shrink:0;
+    background:var(--white); border-radius:10px; padding:6px 10px;
+  }
+  .footer-logo-img{height:32px;}
+  .brand-text{line-height:1.1;}
+  .brand-text .sub{font-size:9.5px; color:rgba(255,255,255,0.75); font-weight:600; letter-spacing:0.5px;}
+
+  .header-divider{display:none; width:1px; height:28px; background:rgba(255,255,255,0.2); flex-shrink:0;}
+
+  .main-nav{display:none; align-items:center; gap:26px; flex:1; justify-content:center;}
+  .main-nav a{font-size:13.5px; font-weight:700; color:var(--white); white-space:nowrap;}
+  .main-nav a:hover{color:var(--gold);}
+
+  .iata{
+    display:none; align-items:center; gap:8px;
+    font-size:10px; color:var(--white); line-height:1.2; font-weight:600;
+    background:linear-gradient(135deg, var(--navy-2) 0%, var(--navy) 100%);
+    border:1px solid rgba(255,255,255,0.15); border-radius:8px; padding:6px 12px;
+  }
+  .iata-logo-chip{display:flex; align-items:center; justify-content:center; background:var(--white); border-radius:5px; padding:3px 6px; flex-shrink:0;}
+  .iata-logo-chip img{height:18px; width:auto; display:block;}
+  .header-right{display:flex; align-items:center; gap:10px; flex-shrink:0;}
+  .lang-toggle{
+    display:flex; align-items:center; background:var(--white);
+    border:1px solid var(--line); border-radius:999px; overflow:hidden;
+    font-size:11px; font-weight:700;
+  }
+  .lang-toggle span{padding:8px 14px; cursor:pointer; color:var(--ink); white-space:nowrap;}
+  .lang-toggle .active{background:var(--purple); color:var(--white);}
+  .call-btn{
+    width:38px;height:38px;border-radius:50%; flex-shrink:0;
+    background:linear-gradient(135deg,var(--purple) 0%, var(--purple-2) 100%);
+    display:flex;align-items:center;justify-content:center;
+    box-shadow:0 4px 10px rgba(91,52,201,0.4);
+  }
+  .call-btn svg{width:17px;height:17px; stroke:var(--white); fill:none;}
+  .header-cta{
+    display:none; align-items:center; gap:8px; background:var(--green); color:var(--white);
+    border-radius:999px; padding:10px 18px; font-size:13px; font-weight:800; white-space:nowrap;
+  }
+  .header-cta svg{width:16px;height:16px; stroke:var(--white); fill:none;}
+
+  /* mobile nav drawer */
+  .mobile-nav{
+    display:none; flex-direction:column; gap:2px; background:var(--navy-2);
+    border-bottom:1px solid rgba(255,255,255,0.1); padding:8px 20px 16px;
+  }
+  .mobile-nav.open{display:flex;}
+  .mobile-nav a{padding:10px 4px; font-size:14px; font-weight:700; color:var(--white); border-bottom:1px solid rgba(255,255,255,0.1);}
+  .mobile-nav a:last-child{border-bottom:none;}
+
+  /* ---------- Hero ---------- */
+  .hero{
+    position:relative;
+    background-color:#12123a;
+    padding:28px 0 70px;
+    min-height:420px;
+    overflow:hidden;
+  }
+  .hero::before{
+    content:"";
+    position:absolute; inset:0;
+    background-image:url('hero-plane.jpg');
+    background-size:contain;
+    background-position:right center;
+    background-repeat:no-repeat;
+    z-index:0;
+  }
+  .hero::after{
+    content:"";
+    position:absolute; inset:0;
+    background:
+      linear-gradient(180deg, rgba(10,10,30,0.28) 0%, rgba(10,10,30,0) 18%, rgba(10,10,30,0) 78%, rgba(10,10,30,0.35) 100%),
+      linear-gradient(90deg,
+        #12123a 0%, #12123a 38%,
+        rgba(18,18,58,0.96) 44%,
+        rgba(18,18,58,0.82) 52%,
+        rgba(18,18,58,0.56) 62%,
+        rgba(18,18,58,0.28) 74%,
+        rgba(18,18,58,0.08) 86%,
+        rgba(18,18,58,0) 96%);
+    z-index:1;
+  }
+  .hero-inner{
+    max-width:var(--container); margin:0 auto; padding:0 20px; position:relative; z-index:2;
+    display:flex; flex-direction:column; gap:28px;
+  }
+  .hero-copy{position:relative; z-index:2; max-width:560px;}
+  .hero-copy .eyebrow{color:#dfe3ff; font-size:20px; font-weight:600;}
+  .hero-copy .headline{
+    color:var(--gold); font-size:34px; font-weight:900; letter-spacing:0.5px;
+    margin-top:4px; text-shadow:0 2px 10px rgba(0,0,0,0.35); line-height:1.15;
+  }
+  .hero-copy .desc{color:#e7e9ff; font-size:14.5px; font-weight:500; margin-top:14px; line-height:1.6; max-width:480px;}
+  .hero-features{margin-top:20px; display:flex; flex-wrap:wrap; gap:14px 22px;}
+  .hero-features .item{display:flex; align-items:center; gap:9px; color:#f2f3ff; font-size:13.5px; font-weight:600;}
+  .hero-features svg{width:18px;height:18px; stroke:var(--gold); fill:none; flex-shrink:0;}
+  .hero-actions{margin-top:26px; display:flex; flex-wrap:wrap; gap:12px;}
+  .btn{
+    display:inline-flex; align-items:center; justify-content:center; gap:9px;
+    border-radius:999px; padding:13px 24px; font-size:13.5px; font-weight:800; cursor:pointer; border:none;
+  }
+  .btn svg{width:17px;height:17px; fill:none;}
+  .btn-primary{background:linear-gradient(90deg, var(--pink) 0%, var(--blue-grad) 100%); color:var(--white); box-shadow:0 8px 20px rgba(91,52,201,0.4);}
+  .btn-primary svg{stroke:var(--white);}
+  .btn-ghost{background:rgba(255,255,255,0.12); color:var(--white); border:1.5px solid rgba(255,255,255,0.5);}
+  .btn-ghost svg{stroke:var(--white);}
+
+  .hero-visual{position:relative; z-index:2; align-self:flex-end; width:100%; max-width:420px; margin-top:8px;}
+  .group-fares-badge{
+    margin-left:auto; z-index:3; position:relative;
+    width:220px; border-radius:14px; overflow:hidden;
+    box-shadow:0 10px 24px rgba(0,0,0,0.3);
+  }
+  .group-fares-badge .top{
+    background:var(--gold); padding:12px 14px 10px; display:flex; gap:8px; align-items:flex-start;
+  }
+  .group-fares-badge .top svg{width:22px;height:22px; stroke:var(--navy); fill:none; flex-shrink:0; margin-top:1px;}
+  .group-fares-badge .top .t1{font-size:12px; font-weight:800; color:var(--navy); line-height:1.25;}
+  .group-fares-badge .bottom{
+    background:var(--navy); color:var(--white); font-size:11px; font-weight:600;
+    padding:9px 14px 11px; line-height:1.35;
+  }
+
+  /* ---------- Flight enquiry card ---------- */
+  .enquiry-wrap{max-width:var(--container); margin:-46px auto 0; padding:0 20px; position:relative; z-index:4;}
+  .enquiry-card{
+    background:var(--white); border-radius:18px;
+    box-shadow:0 20px 46px rgba(20,20,60,0.2); padding:22px;
+  }
+  .enquiry-head{display:flex; align-items:flex-start; justify-content:space-between; margin-bottom:18px; flex-wrap:wrap; gap:14px;}
+  .enquiry-head .left{display:flex; align-items:center; gap:12px;}
+  .enquiry-head .left svg{width:28px;height:28px; stroke:var(--purple); fill:none;}
+  .enquiry-head .title{font-size:17px; font-weight:800; color:var(--navy);}
+  .enquiry-head .subtitle{font-size:11px; color:var(--muted); font-weight:600;}
+  .trip-tabs{display:flex; gap:8px; flex-wrap:wrap;}
+  .trip-tabs button{
+    border:1px solid var(--line); background:var(--white); border-radius:8px;
+    padding:9px 13px; font-size:11px; font-weight:700; color:var(--ink);
+    display:flex; align-items:center; gap:6px; cursor:pointer;
+  }
+  .trip-tabs button svg{width:13px;height:13px; stroke:currentColor; fill:none;}
+  .trip-tabs .active{background:linear-gradient(135deg,var(--purple),var(--purple-2)); color:var(--white); border:none;}
+
+  .route-row{
+    position:relative; display:flex; flex-direction:column; border:1px solid var(--line); border-radius:12px; margin-bottom:14px;
+  }
+  .route-field{flex:1; padding:14px 16px;}
+  .route-field .label{display:flex; align-items:center; gap:5px; font-size:11px; color:var(--muted); font-weight:600; margin-bottom:3px;}
+  .route-field .label svg{width:12px;height:12px; stroke:var(--purple); fill:none;}
+  .route-field .value{font-size:15px; font-weight:800; color:var(--ink);}
+  .route-field .sub{font-size:10.5px; color:var(--muted); margin-top:1px;}
+  .route-select{
+    appearance:none; -webkit-appearance:none; border:none; background:transparent;
+    font-size:15px; font-weight:800; color:var(--ink); font-family:inherit; cursor:pointer;
+    width:100%; padding:0; margin:0;
+  }
+  .route-select:focus{outline:2px solid var(--purple); outline-offset:2px; border-radius:4px;}
+  .swap-btn{
+    position:absolute; left:50%; top:50%; transform:translate(-50%,-50%) rotate(90deg);
+    width:36px;height:36px; border-radius:50%; border:1px solid var(--line); background:var(--white);
+    display:flex; align-items:center; justify-content:center; z-index:2;
+    box-shadow:0 2px 6px rgba(0,0,0,0.08);
+  }
+  .swap-btn svg{width:15px;height:15px; stroke:var(--purple); fill:none;}
+
+  .meta-row{display:grid; grid-template-columns:repeat(3,1fr); border:1px solid var(--line); border-radius:12px; margin-bottom:18px; overflow:hidden;}
+  .meta-field{padding:12px 14px; border-right:1px solid var(--line);}
+  .meta-field:last-child{border-right:none;}
+  .meta-field .label{display:flex; align-items:center; gap:5px; font-size:10px; color:var(--muted); font-weight:600; margin-bottom:3px;}
+  .meta-field .label svg{width:11px;height:11px; stroke:var(--purple); fill:none;}
+  .meta-field .value{font-size:12.5px; font-weight:800; color:var(--ink);}
+  .date-pair{display:flex; align-items:center; gap:6px; flex-wrap:wrap;}
+  .date-pair .arrow-sep{font-size:11px; color:var(--muted);}
+  .date-input, .cabin-select{
+    appearance:none; -webkit-appearance:none; border:none; background:transparent;
+    font-size:12.5px; font-weight:800; color:var(--ink); font-family:inherit; cursor:pointer;
+    padding:0; margin:0; width:auto; max-width:112px;
+  }
+  .date-input:focus, .cabin-select:focus{outline:2px solid var(--purple); outline-offset:2px; border-radius:4px;}
+
+  /* ---------- Custom dropdown (contains the option list within the card on all screens) ---------- */
+  .custom-select{position:relative; display:block; width:100%;}
+  .custom-select-native{position:absolute; opacity:0; width:1px; height:1px; overflow:hidden; pointer-events:none;}
+  .custom-select-display{display:inline-flex; align-items:center; gap:6px;}
+  .custom-select-display::after{content:"▾"; font-size:9px; color:var(--muted); flex-shrink:0;}
+  .custom-select-list{
+    display:none; position:absolute; top:calc(100% + 6px); left:0; right:0; z-index:30;
+    background:var(--white); border:1px solid var(--line); border-radius:12px;
+    box-shadow:0 14px 30px rgba(20,20,60,0.18); max-height:230px; overflow-y:auto; padding:6px;
+  }
+  .meta-field:last-child .custom-select-list{left:auto; right:0; min-width:170px;}
+  .custom-select.open .custom-select-list{display:block;}
+  .custom-select-option{padding:10px 12px; font-size:13.5px; font-weight:600; color:var(--ink); border-radius:8px; cursor:pointer;}
+  .custom-select-option:hover, .custom-select-option.active{background:var(--lav-bg);}
+  .custom-select-option.selected{color:var(--purple); font-weight:800;}
+  .pax-stepper{display:flex; align-items:center; gap:9px;}
+  .pax-btn{
+    width:20px; height:20px; border-radius:50%; border:1px solid var(--line); background:var(--white);
+    display:flex; align-items:center; justify-content:center; font-weight:800; font-size:14px; line-height:1;
+    color:var(--purple); cursor:pointer; padding:0; flex-shrink:0;
+  }
+  .pax-btn:hover{background:var(--lav-bg);}
+  .pax-count{font-size:12.5px; font-weight:800; color:var(--ink); min-width:16px; text-align:center;}
+
+  .cta-whatsapp{
+    display:flex; align-items:center; justify-content:center; gap:12px;
+    background:linear-gradient(90deg, var(--pink) 0%, var(--blue-grad) 100%);
+    border:none; border-radius:12px; width:100%; padding:15px; cursor:pointer;
+    color:var(--white); box-shadow:0 8px 18px rgba(91,52,201,0.35);
+  }
+  .cta-whatsapp .icon{
+    width:26px;height:26px; border-radius:50%; background:var(--green);
+    display:flex; align-items:center; justify-content:center; flex-shrink:0;
+  }
+  .cta-whatsapp .icon svg{width:14px;height:14px; stroke:var(--white); fill:none;}
+  .cta-whatsapp .text{text-align:left;}
+  .cta-whatsapp .t1{font-size:14.5px; font-weight:800;}
+  .cta-whatsapp .t2{font-size:10.5px; opacity:0.9; font-weight:600;}
+
+  /* ---------- Section wrapper ---------- */
+  .section{padding:56px 0 8px;}
+  .section-head{display:flex; align-items:center; justify-content:space-between; margin-bottom:24px; flex-wrap:wrap; gap:10px;}
+  .section-head .left{display:flex; align-items:center; gap:9px;}
+  .section-head .left svg{width:20px;height:20px; stroke:#ff7a1a; fill:#ff7a1a;}
+  .iata-badge{display:inline-flex; align-items:center; margin-left:6px; padding:3px 8px; background:var(--lav-bg); border-radius:6px;}
+  .iata-badge img{height:16px; width:auto; display:block;}
+  .section-head h2{font-size:20px; font-weight:800; color:var(--navy); letter-spacing:0.3px;}
+  .section-head .eyebrow-sm{display:block; font-size:11px; font-weight:700; color:var(--purple); letter-spacing:1px; text-transform:uppercase; margin-bottom:4px;}
+  .section-head .link{font-size:12.5px; color:var(--purple); font-weight:700; display:flex; align-items:center; gap:3px;}
+  .section-head .link svg{width:13px;height:13px; stroke:var(--purple); fill:none;}
+
+  /* ---------- Fare cards ---------- */
+  .fare-scroll{display:grid; grid-template-columns:repeat(auto-fit,minmax(240px,1fr)); gap:18px;}
+  .fare-card{
+    background:var(--white); border:1px solid var(--line); border-radius:16px;
+    box-shadow:0 4px 14px rgba(20,20,60,0.08); transition:transform .2s ease, box-shadow .2s ease;
+    position:relative; padding:16px 16px 18px;
+  }
+  .fare-card:hover{transform:translateY(-4px); box-shadow:0 14px 28px rgba(20,20,60,0.16);}
+  .fare-card .ribbon{
+    position:absolute; top:14px; left:14px; z-index:2; border-radius:999px;
+    font-size:10px; font-weight:800; color:var(--white); padding:6px 13px; letter-spacing:0.4px;
+  }
+  .ribbon.best{background:var(--red);}
+  .ribbon.groupA{background:var(--navy);}
+  .ribbon.groupB{background:var(--green);}
+  .fare-top{display:flex; align-items:flex-start; justify-content:space-between; gap:8px; margin-top:28px;}
+  .fare-info{flex:1; min-width:0;}
+  .fare-illustration{width:42%; max-width:130px; height:auto; object-fit:contain; object-position:top center; flex-shrink:0; display:block;}
+  .fare-route{font-size:15px; font-weight:800; color:var(--ink); margin-bottom:4px;}
+  .fare-airline{font-size:12.5px; font-weight:800; margin-bottom:8px;}
+  .airline-red{color:var(--red);}
+  .airline-blue{color:#1e63c9;}
+  .airline-navy{color:var(--navy);}
+  .fare-details{display:flex; flex-direction:column; gap:4px; margin-bottom:10px;}
+  .fare-details .row{display:flex; align-items:center; gap:6px; font-size:11px; color:var(--muted); font-weight:600;}
+  .fare-details svg{width:12px;height:12px; stroke:var(--muted); fill:none;}
+  .fare-price-row{display:flex; align-items:center; justify-content:space-between; margin-top:14px; flex-wrap:wrap; gap:10px;}
+  .fare-price .inr{font-size:18px; font-weight:900; color:var(--green);}
+  .fare-price .kwd{font-size:11px; color:var(--muted); font-weight:700;}
+  .enquire-btn{
+    border:none; border-radius:999px; color:var(--white); font-size:11.5px; font-weight:800;
+    padding:10px 16px; display:flex; align-items:center; gap:7px; cursor:pointer;
+  }
+  .enquire-btn svg{width:12px;height:12px; stroke:var(--white); fill:none;}
+  .enquire-btn.red{background:var(--red);}
+  .enquire-btn.navy{background:var(--navy);}
+  .enquire-btn.green{background:var(--green);}
+
+  /* ---------- Taxi section ---------- */
+  .taxi-panel{background:var(--lav-bg); border-radius:20px; padding:28px;}
+  .taxi-head{display:flex; align-items:center; justify-content:space-between; margin-bottom:20px; flex-wrap:wrap; gap:14px;}
+  .taxi-head .left{display:flex; align-items:center; gap:12px;}
+  .taxi-head .left svg{width:26px;height:26px; stroke:var(--navy); fill:none;}
+  .taxi-head h3{font-size:16px; font-weight:800; color:var(--navy);}
+  .taxi-head .sub{font-size:11px; color:var(--muted); font-weight:600;}
+  .taxi-cta{
+    background:var(--purple); color:var(--white); border:none; border-radius:9px;
+    font-size:12px; font-weight:800; padding:10px 16px; display:flex; align-items:center; gap:6px; cursor:pointer;
+  }
+  .taxi-cta svg{width:13px;height:13px; stroke:var(--white); fill:none;}
+  .taxi-grid{display:grid; grid-template-columns:repeat(3,1fr); gap:14px;}
+  .taxi-item{
+    background:var(--white); border-radius:14px; overflow:hidden; text-align:left;
+    box-shadow:0 2px 10px rgba(20,20,60,0.06); transition:transform .2s ease, box-shadow .2s ease;
+  }
+  .taxi-item:hover{transform:translateY(-4px); box-shadow:0 12px 26px rgba(20,20,60,0.14);}
+  .taxi-img-wrap{display:flex; align-items:center; justify-content:center; height:118px; padding:12px;}
+  .taxi-item.pickup .taxi-img-wrap{background:linear-gradient(135deg,#eafbea 0%,#d9f4dd 100%);}
+  .taxi-item.drop .taxi-img-wrap{background:linear-gradient(135deg,#e9f2fd 0%,#dae8fc 100%);}
+  .taxi-item.local .taxi-img-wrap{background:linear-gradient(135deg,#fff8e0 0%,#fcefc2 100%);}
+  .taxi-item .ill{max-width:88%; max-height:100%; width:auto; height:auto; object-fit:contain; display:block;}
+  .taxi-text{padding:12px 14px 16px; display:flex; align-items:center; justify-content:space-between; gap:8px;}
+  .taxi-text .arrow{width:26px; height:26px; border-radius:50%; background:var(--lav-bg); display:flex; align-items:center; justify-content:center; flex-shrink:0;}
+  .taxi-text .arrow svg{width:13px; height:13px; stroke:var(--purple); fill:none;}
+  .taxi-item .t1{font-size:12.5px; font-weight:800; color:var(--ink); line-height:1.15;}
+  .taxi-item .t2{font-size:10.5px; color:var(--muted); font-weight:600;}
+
+  /* ---------- Service cards ---------- */
+  .service-grid{display:grid; grid-template-columns:repeat(auto-fit,minmax(280px,1fr)); gap:18px;}
+  .service-card{display:flex; align-items:center; gap:12px; border-radius:18px; padding:20px; position:relative; overflow:hidden;}
+  .service-card.medical{background:var(--blue-bg);}
+  .service-card.visa{background:var(--green-bg);}
+  .service-info{flex:1; min-width:0;}
+  .service-icon{width:30px; height:30px; margin-bottom:8px;}
+  .service-icon svg{width:100%; height:100%;}
+  .service-card.medical .service-icon svg{stroke:#1e63c9;}
+  .service-card.visa .service-icon svg{stroke:var(--green);}
+  .service-photo{width:36%; max-width:112px; height:auto; object-fit:contain; flex-shrink:0; display:block;}
+  .service-card h4{font-size:14px; font-weight:800; color:var(--ink); line-height:1.2; margin-bottom:6px;}
+  .service-card p{font-size:11.5px; color:var(--muted); font-weight:600; line-height:1.4; margin-bottom:14px;}
+  .service-btn{
+    border:none; border-radius:8px; font-size:11.5px; font-weight:800; color:var(--white);
+    padding:10px 14px; display:flex; align-items:center; gap:6px; cursor:pointer;
+  }
+  .service-btn svg{width:11px;height:11px; stroke:var(--white); fill:none;}
+  .service-btn.blue{background:#1e63c9;}
+  .service-btn.green{background:var(--green);}
+
+  /* ---------- Trust bar ---------- */
+  .trust-bar{
+    display:grid; grid-template-columns:repeat(3,1fr); gap:26px 10px;
+    padding:36px 0; border-top:1px solid var(--line); border-bottom:1px solid var(--line); margin-top:20px; text-align:center;
+  }
+  .trust-item svg{width:26px;height:26px; stroke:var(--navy); fill:none; margin-bottom:8px;}
+  .trust-item .t1{font-size:12px; font-weight:800; color:var(--ink); line-height:1.2;}
+  .trust-item .t2{font-size:10px; color:var(--muted); font-weight:600;}
+
+  /* ---------- Footer ---------- */
+  footer{background:var(--navy); color:#c7cdef; margin-top:0;}
+  .footer-top{padding:52px 0 30px; display:grid; grid-template-columns:1.4fr 1fr 1fr 1.2fr; gap:32px;}
+  .footer-brand .brand{margin-bottom:14px;}
+  .footer-brand p{font-size:12.5px; line-height:1.7; color:#a9b0da; max-width:280px;}
+  .footer-social{display:flex; gap:10px; margin-top:16px;}
+  .footer-social a{
+    width:34px;height:34px; border-radius:50%; background:rgba(255,255,255,0.08);
+    display:flex; align-items:center; justify-content:center;
+  }
+  .footer-social svg{width:15px;height:15px; stroke:var(--white); fill:none;}
+  .footer-col h5{font-size:12.5px; font-weight:800; color:var(--white); letter-spacing:0.6px; text-transform:uppercase; margin-bottom:16px;}
+  .footer-col ul{display:flex; flex-direction:column; gap:11px;}
+  .footer-col a{font-size:12.5px; color:#a9b0da; font-weight:500;}
+  .footer-col a:hover{color:var(--gold);}
+  .footer-contact li{font-size:12.5px; color:#a9b0da; line-height:1.5;}
+  .footer-contact svg{width:16px;height:16px; stroke:var(--gold); fill:none; flex-shrink:0; margin-top:2px;}
+  .footer-map{
+    display:block; margin-top:16px; border-radius:10px; overflow:hidden;
+    border:1px solid rgba(255,255,255,0.15);
+  }
+  .footer-bottom{
+    border-top:1px solid rgba(255,255,255,0.12); padding:18px 0; display:flex; align-items:center;
+    justify-content:space-between; flex-wrap:wrap; gap:10px; font-size:11.5px; color:#8891bb;
+  }
+
+  /* ---------- Floating WhatsApp button ---------- */
+  .float-whatsapp{
+    position:fixed; right:22px; bottom:22px; z-index:60;
+    width:58px; height:58px; border-radius:50%; background:var(--green);
+    display:flex; align-items:center; justify-content:center; box-shadow:0 10px 24px rgba(0,0,0,0.3);
+  }
+  .float-whatsapp svg{width:26px;height:26px; stroke:var(--white); fill:none;}
+
+  /* =========================================================
+     Responsive breakpoints
+  ========================================================= */
+  @media (min-width:641px){
+    .taxi-panel{padding:32px;}
+    .trust-bar{grid-template-columns:repeat(5,1fr);}
+  }
+
+  @media (min-width:768px){
+    .iata{display:flex;}
+    .header-divider{display:block;}
+    .route-row{flex-direction:row; align-items:stretch;}
+    .swap-btn{transform:translate(-50%,-50%) rotate(0deg);}
+    .route-field:last-child{text-align:right;}
+    .route-field:last-child .label{justify-content:flex-end;}
+    .route-field:last-child .route-select{text-align:right; text-align-last:right;}
+    .route-field:last-child .custom-select-display{justify-content:flex-end;}
+    .hero-copy .headline{font-size:40px;}
+  }
+
+  @media (min-width:1025px){
+    .menu-btn{display:none;}
+    .main-nav{display:flex;}
+    .header-cta{display:flex;}
+    .hero-inner{flex-direction:row; align-items:center; justify-content:space-between; padding-top:20px;}
+    .hero-copy{flex:1;}
+    .hero-visual{flex:0 0 420px; margin-top:0;}
+    .hero-copy .headline{font-size:46px;}
+    .hero-copy .desc{font-size:15.5px;}
+    .fare-scroll{grid-template-columns:repeat(3,1fr);}
+  }
+
+  @media (max-width:1024px){
+    .footer-top{grid-template-columns:1fr 1fr;}
+  }
+  /* Telugu script renders visually larger than Latin at the same font-size — trim it down */
+  html[lang="te"] .i18n{font-size:calc(1em - 1.5px);}
+
+  @media (max-width:640px){
+    .footer-top{grid-template-columns:1fr;}
+    .taxi-grid{grid-template-columns:1fr 1fr;}
+    .hero-copy .eyebrow{font-size:17px;}
+    .hero-copy .headline{font-size:26px;}
+    .enquiry-card{padding:18px;}
+    .meta-row{grid-template-columns:1fr;}
+    .meta-field{border-right:none; border-bottom:1px solid var(--line);}
+    .meta-field:last-child{border-bottom:none;}
+  }
+</style>
+</head>
+<body>
+
+  <!-- Header -->
+  <header>
+    <div class="header-inner">
+      <button class="menu-btn" id="menuBtn" aria-label="Menu">
+        <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round"><line x1="4" y1="7" x2="20" y2="7"/><line x1="4" y1="12" x2="20" y2="12"/><line x1="4" y1="17" x2="20" y2="17"/></svg>
+      </button>
+      <a href="#home" class="brand">
+        <img src="images/logo.png" alt="Miya Travels" class="brand-logo-img">
+        <div class="brand-text">
+          <div class="sub"><span class="i18n" data-en="FLY • EXPLORE • ARRIVE" data-te="ప్రయాణం • అన్వేషణ • చేరుకోండి">FLY • EXPLORE • ARRIVE</span></div>
+        </div>
+      </a>
+
+      <nav class="main-nav">
+        <a href="#home"><span class="i18n" data-en="Home" data-te="హోమ్">Home</span></a>
+        <a href="#fares"><span class="i18n" data-en="Group Fares" data-te="గ్రూప్ ఫేర్‌లు">Group Fares</span></a>
+        <a href="#taxi"><span class="i18n" data-en="Taxi" data-te="టాక్సీ">Taxi</span></a>
+        <a href="#services"><span class="i18n" data-en="Services" data-te="సేవలు">Services</span></a>
+        <a href="#contact"><span class="i18n" data-en="Contact" data-te="సంప్రదించండి">Contact</span></a>
+      </nav>
+
+      <div class="header-divider"></div>
+
+      <div class="iata">
+        <span class="iata-logo-chip"><img src="images/iata.png" alt="IATA"></span>
+        <span><span class="i18n" data-en="IATA Accredited" data-te="IATA గుర్తింపు పొందిన">IATA Accredited</span><br><span class="i18n" data-en="Travel Agency" data-te="ట్రావెల్ ఏజెన్సీ">Travel Agency</span></span>
+      </div>
+
+      <div class="header-right">
+        <div class="lang-toggle" id="langToggle">
+          <span class="active" data-lang="en">English</span>
+          <span data-lang="te">తెలుగు</span>
+        </div>
+        <a class="call-btn" href="tel:+917770003158" aria-label="Call Miya Travels">
+          <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.13.96.36 1.9.68 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.91.32 1.85.55 2.81.68A2 2 0 0 1 22 16.92z"/></svg>
+        </a>
+        <a class="header-cta js-wa" data-wa-msg="Hi Miya Travels, I have a query.">
+          <svg viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+          <span class="i18n" data-en="WhatsApp Us" data-te="వాట్సాప్ చేయండి">WhatsApp Us</span>
+        </a>
+      </div>
+    </div>
+    <nav class="mobile-nav" id="mobileNav">
+      <a href="#home"><span class="i18n" data-en="Home" data-te="హోమ్">Home</span></a>
+      <a href="#fares"><span class="i18n" data-en="Group Fares" data-te="గ్రూప్ ఫేర్‌లు">Group Fares</span></a>
+      <a href="#taxi"><span class="i18n" data-en="Taxi" data-te="టాక్సీ">Taxi</span></a>
+      <a href="#services"><span class="i18n" data-en="Services" data-te="సేవలు">Services</span></a>
+      <a href="#contact"><span class="i18n" data-en="Contact" data-te="సంప్రదించండి">Contact</span></a>
+    </nav>
+  </header>
+
+  <!-- Hero -->
+  <section class="hero" id="home">
+    <div class="hero-inner">
+      <div class="hero-copy">
+        <div class="eyebrow"><span class="i18n" data-en="Kuwait ↔ India" data-te="కువైట్ ↔ ఇండియా">Kuwait ↔ India</span></div>
+        <div class="headline"><span class="i18n" data-en="TRAVEL EXPERTS" data-te="ట్రావెల్ నిపుణులు">TRAVEL EXPERTS</span></div>
+        <p class="desc"><span class="i18n" data-en="Best group fares, visa assistance, taxi transfers and GAMCA medical bookings — all under one trusted roof, with dedicated Telugu-speaking support around the clock." data-te="ఉత్తమ గ్రూప్ ఫేర్‌లు, వీసా సహాయం, టాక్సీ ట్రాన్స్‌ఫర్‌లు మరియు గామ్కా మెడికల్ బుకింగ్‌లు — అన్నీ ఒకే గొడుగు కింద, 24 గంటలూ తెలుగు మాట్లాడే సహాయంతో.">Best group fares, visa assistance, taxi transfers and GAMCA medical bookings — all under one trusted roof, with dedicated Telugu-speaking support around the clock.</span></p>
+        <div class="hero-features">
+          <div class="item"><svg viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg><span class="i18n" data-en="Best Group Fares" data-te="ఉత్తమ గ్రూప్ ఫేర్‌లు">Best Group Fares</span></div>
+          <div class="item"><svg viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M8 12l2.5 2.5L16 9"/></svg><span class="i18n" data-en="100% Support" data-te="100% సహాయం">100% Support</span></div>
+          <div class="item"><svg viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2l8 4v6c0 5-3.4 8.4-8 10-4.6-1.6-8-5-8-10V6l8-4z"/></svg><span class="i18n" data-en="Safe & Reliable" data-te="సురక్షితం & నమ్మదగినది">Safe &amp; Reliable</span></div>
+        </div>
+        <div class="hero-actions">
+          <button type="button" class="btn btn-primary" id="heroWhatsappBtn">
+            <svg viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+            <span class="i18n" data-en="Get Fare on WhatsApp" data-te="వాట్సాప్‌లో ఫేర్ పొందండి">Get Fare on WhatsApp</span>
+          </button>
+          <a href="#fares" class="btn btn-ghost">
+            <svg viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2c2 4-2 5-2 9a4 4 0 0 0 8 0c0-2-1-3-1-3s2 1 2 5a7 7 0 0 1-14 0c0-6 5-7 7-11z"/></svg>
+            <span class="i18n" data-en="View Group Fares" data-te="గ్రూప్ ఫేర్‌లు చూడండి">View Group Fares</span>
+          </a>
+        </div>
+      </div>
+      <div class="hero-visual">
+        <div class="group-fares-badge">
+          <div class="top">
+            <svg viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+            <div class="t1"><span class="i18n" data-en="SPECIAL" data-te="ప్రత్యేక">SPECIAL</span><br><span class="i18n" data-en="GROUP FARES" data-te="గ్రూప్ ఫేర్‌లు">GROUP FARES</span></div>
+          </div>
+          <div class="bottom"><span class="i18n" data-en="Best Prices for Families & Groups" data-te="కుటుంబాలు & గ్రూప్‌లకు ఉత్తమ ధరలు">Best Prices for Families &amp; Groups</span></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Flight enquiry -->
+  <div class="enquiry-wrap">
+    <div class="enquiry-card">
+      <div class="enquiry-head">
+        <div class="left">
+          <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 16l20-8-7 8 7 8-20-8z"/></svg>
+          <div>
+            <div class="title"><span class="i18n" data-en="FLIGHT ENQUIRY" data-te="ఫ్లైట్ విచారణ">FLIGHT ENQUIRY</span></div>
+            <div class="subtitle"><span class="i18n" data-en="One Way • Round Trip • Group Enquiry" data-te="వన్ వే • రౌండ్ ట్రిప్ • గ్రూప్ విచారణ">One Way • Round Trip • Group Enquiry</span></div>
+          </div>
+        </div>
+        <div class="trip-tabs" id="tripTabs">
+          <button type="button" class="active" data-trip="oneway"><svg viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 16l20-8-7 8 7 8-20-8z"/></svg><span class="i18n" data-en="One Way" data-te="వన్ వే">One Way</span></button>
+          <button type="button" data-trip="roundtrip"><svg viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 1l4 4-4 4M3 11V9a4 4 0 0 1 4-4h14M7 23l-4-4 4-4M21 13v2a4 4 0 0 1-4 4H3"/></svg><span class="i18n" data-en="Round Trip" data-te="రౌండ్ ట్రిప్">Round Trip</span></button>
+          <button type="button" data-trip="group"><svg viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/></svg><span class="i18n" data-en="Group" data-te="గ్రూప్">Group</span></button>
+        </div>
+      </div>
+
+      <div class="route-row">
+        <div class="route-field">
+          <div class="label"><svg viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg><span class="i18n" data-en="From" data-te="నుండి">From</span></div>
+          <select class="route-select" id="fromSelect" aria-label="From">
+            <option value="Kuwait (KWI)" data-sub="Kuwait International Airport">Kuwait (KWI)</option>
+            <option value="Hyderabad (HYD)" data-sub="Rajiv Gandhi International Airport">Hyderabad (HYD)</option>
+            <option value="Chennai (MAA)" data-sub="Chennai International Airport">Chennai (MAA)</option>
+            <option value="Bangalore (BLR)" data-sub="Kempegowda International Airport">Bangalore (BLR)</option>
+            <option value="Delhi (DEL)" data-sub="Indira Gandhi International Airport">Delhi (DEL)</option>
+            <option value="Mumbai (BOM)" data-sub="Chhatrapati Shivaji Maharaj International Airport">Mumbai (BOM)</option>
+          </select>
+          <div class="sub" id="fromSub">Kuwait International Airport</div>
+        </div>
+        <div class="swap-btn" id="swapBtn" role="button" tabindex="0" aria-label="Swap origin and destination"><svg viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 1l4 4-4 4M3 11V9a4 4 0 0 1 4-4h14M7 23l-4-4 4-4M21 13v2a4 4 0 0 1-4 4H3"/></svg></div>
+        <div class="route-field">
+          <div class="label"><span class="i18n" data-en="To" data-te="కు">To</span><svg viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg></div>
+          <select class="route-select" id="toSelect" aria-label="To">
+            <option value="Kuwait (KWI)" data-sub="Kuwait International Airport">Kuwait (KWI)</option>
+            <option value="Hyderabad (HYD)" data-sub="Rajiv Gandhi International Airport" selected>Hyderabad (HYD)</option>
+            <option value="Chennai (MAA)" data-sub="Chennai International Airport">Chennai (MAA)</option>
+            <option value="Bangalore (BLR)" data-sub="Kempegowda International Airport">Bangalore (BLR)</option>
+            <option value="Delhi (DEL)" data-sub="Indira Gandhi International Airport">Delhi (DEL)</option>
+            <option value="Mumbai (BOM)" data-sub="Chhatrapati Shivaji Maharaj International Airport">Mumbai (BOM)</option>
+          </select>
+          <div class="sub" id="toSub">Rajiv Gandhi International Airport</div>
+        </div>
+      </div>
+
+      <div class="meta-row">
+        <div class="meta-field">
+          <div class="label"><svg viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg><span class="i18n" data-en="Departure" data-te="బయలుదేరే తేదీ">Departure</span></div>
+          <div class="date-pair">
+            <input type="date" class="date-input" id="departDate" value="2026-07-15" aria-label="Departure date">
+            <span class="arrow-sep" id="returnArrow" style="display:none;">→</span>
+            <input type="date" class="date-input" id="returnDate" value="2026-07-22" style="display:none;" aria-label="Return date">
+          </div>
+        </div>
+        <div class="meta-field">
+          <div class="label"><svg viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg><span class="i18n" data-en="Passengers" data-te="ప్రయాణికులు">Passengers</span></div>
+          <div class="pax-stepper">
+            <button type="button" class="pax-btn" id="paxMinus" aria-label="Decrease passengers">−</button>
+            <span class="pax-count" id="paxCount">1</span>
+            <button type="button" class="pax-btn" id="paxPlus" aria-label="Increase passengers">+</button>
+          </div>
+        </div>
+        <div class="meta-field">
+          <div class="label"><svg viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19h16M6 19V9l6-5 6 5v10"/></svg><span class="i18n" data-en="Cabin" data-te="క్యాబిన్">Cabin</span></div>
+          <select class="cabin-select" id="cabinSelect" aria-label="Cabin class">
+            <option value="Economy">Economy</option>
+            <option value="Premium Economy">Premium Economy</option>
+            <option value="Business">Business</option>
+          </select>
+        </div>
+      </div>
+
+      <button type="button" class="cta-whatsapp" id="mainWhatsappBtn">
+        <span class="icon"><svg viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg></span>
+        <span class="text">
+          <div class="t1"><span class="i18n" data-en="GET FARE ON WHATSAPP" data-te="వాట్సాప్‌లో ఫేర్ పొందండి">GET FARE ON WHATSAPP</span></div>
+          <div class="t2"><span class="i18n" data-en="We will reply within a few minutes" data-te="మేము కొన్ని నిమిషాల్లో స్పందిస్తాము">We will reply within a few minutes</span></div>
+        </span>
+      </button>
+    </div>
+  </div>
+
+  <!-- Group fares -->
+  <div class="section" id="fares">
+    <div class="container">
+      <div class="section-head">
+        <div>
+          <span class="eyebrow-sm i18n" data-en="Handpicked Deals" data-te="ఎంపిక చేసిన డీల్స్">Handpicked Deals</span>
+          <div class="left">
+            <svg viewBox="0 0 24 24" stroke-width="2"><path d="M12 2c2 4-2 5-2 9a4 4 0 0 0 8 0c0-2-1-3-1-3s2 1 2 5a7 7 0 0 1-14 0c0-6 5-7 7-11z"/></svg>
+            <h2><span class="i18n" data-en="TODAY'S GROUP FARES" data-te="ఈరోజు గ్రూప్ ఫేర్‌లు">TODAY'S GROUP FARES</span></h2>
+            <span class="iata-badge"><img src="images/iata.png" alt="IATA Accredited"></span>
+          </div>
+        </div>
+        <a class="link js-wa" data-wa-msg="Hi Miya Travels, please share the full list of today's group fares."><span class="i18n" data-en="View All Fares" data-te="అన్ని ఫేర్‌లు చూడండి">View All Fares</span> <svg viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18l6-6-6-6"/></svg></a>
+      </div>
+
+      <div class="fare-scroll">
+        <!-- Card 1 -->
+        <div class="fare-card">
+          <div class="ribbon best"><span class="i18n" data-en="BEST PRICE" data-te="ఉత్తమ ధర">BEST PRICE</span></div>
+          <div class="fare-top">
+            <div class="fare-info">
+              <div class="fare-route">Kuwait → Hyderabad</div>
+              <div class="fare-airline airline-red">AIR INDIA <em style="font-style:normal;">express</em></div>
+              <div class="fare-details">
+                <div class="row"><svg viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg><span class="i18n" data-en="15 Jul 2026 · Direct Flight" data-te="15 జూలై 2026 · డైరెక్ట్ ఫ్లైట్">15 Jul 2026 · Direct Flight</span></div>
+                <div class="row"><svg viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 7h-3V5a2 2 0 0 0-2-2H9a2 2 0 0 0-2 2v2H4a1 1 0 0 0-1 1v11a1 1 0 0 0 1 1h16a1 1 0 0 0 1-1V8a1 1 0 0 0-1-1zM9 5h6v2H9z"/></svg><span class="i18n" data-en="30kg Baggage" data-te="30kg బ్యాగేజ్">30kg Baggage</span></div>
+              </div>
+            </div>
+            <img class="fare-illustration" src="images/charminor.png" alt="Charminar, Hyderabad">
+          </div>
+          <div class="fare-price-row">
+            <div class="fare-price"><div class="inr">₹18,000</div><div class="kwd">69 KWD</div></div>
+            <a class="enquire-btn red js-wa" data-wa-msg="Hi Miya Travels, I'm interested in the AIR INDIA express fare for Kuwait to Hyderabad (Rs.18,000 / 69 KWD) on 15 Jul 2026. Please share more details."><svg viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg><span class="i18n" data-en="Enquire Now" data-te="ఇప్పుడు విచారించండి">Enquire Now</span></a>
+          </div>
+        </div>
+
+        <!-- Card 2 -->
+        <div class="fare-card">
+          <div class="ribbon groupA"><span class="i18n" data-en="GROUP FARE" data-te="గ్రూప్ ఫేర్">GROUP FARE</span></div>
+          <div class="fare-top">
+            <div class="fare-info">
+              <div class="fare-route">Kuwait → Chennai</div>
+              <div class="fare-airline airline-blue">Jazeera airways</div>
+              <div class="fare-details">
+                <div class="row"><svg viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg><span class="i18n" data-en="16 Jul 2026 · Direct Flight" data-te="16 జూలై 2026 · డైరెక్ట్ ఫ్లైట్">16 Jul 2026 · Direct Flight</span></div>
+                <div class="row"><svg viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 7h-3V5a2 2 0 0 0-2-2H9a2 2 0 0 0-2 2v2H4a1 1 0 0 0-1 1v11a1 1 0 0 0 1 1h16a1 1 0 0 0 1-1V8a1 1 0 0 0-1-1zM9 5h6v2H9z"/></svg><span class="i18n" data-en="30kg Baggage" data-te="30kg బ్యాగేజ్">30kg Baggage</span></div>
+              </div>
+            </div>
+            <img class="fare-illustration" src="images/chennai.png" alt="Lighthouse, Chennai">
+          </div>
+          <div class="fare-price-row">
+            <div class="fare-price"><div class="inr">₹17,500</div><div class="kwd">67 KWD</div></div>
+            <a class="enquire-btn navy js-wa" data-wa-msg="Hi Miya Travels, I'm interested in the Jazeera airways fare for Kuwait to Chennai (Rs.17,500 / 67 KWD) on 16 Jul 2026. Please share more details."><svg viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg><span class="i18n" data-en="Enquire Now" data-te="ఇప్పుడు విచారించండి">Enquire Now</span></a>
+          </div>
+        </div>
+
+        <!-- Card 3 -->
+        <div class="fare-card">
+          <div class="ribbon groupB"><span class="i18n" data-en="GROUP FARE" data-te="గ్రూప్ ఫేర్">GROUP FARE</span></div>
+          <div class="fare-top">
+            <div class="fare-info">
+              <div class="fare-route">Kuwait → Bangalore</div>
+              <div class="fare-airline airline-navy">IndiGo</div>
+              <div class="fare-details">
+                <div class="row"><svg viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg><span class="i18n" data-en="17 Jul 2026 · Direct Flight" data-te="17 జూలై 2026 · డైరెక్ట్ ఫ్లైట్">17 Jul 2026 · Direct Flight</span></div>
+                <div class="row"><svg viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 7h-3V5a2 2 0 0 0-2-2H9a2 2 0 0 0-2 2v2H4a1 1 0 0 0-1 1v11a1 1 0 0 0 1 1h16a1 1 0 0 0 1-1V8a1 1 0 0 0-1-1zM9 5h6v2H9z"/></svg><span class="i18n" data-en="30kg Baggage" data-te="30kg బ్యాగేజ్">30kg Baggage</span></div>
+              </div>
+            </div>
+            <img class="fare-illustration" src="images/bangolore.png" alt="Vidhana Soudha, Bangalore">
+          </div>
+          <div class="fare-price-row">
+            <div class="fare-price"><div class="inr">₹16,800</div><div class="kwd">65 KWD</div></div>
+            <a class="enquire-btn green js-wa" data-wa-msg="Hi Miya Travels, I'm interested in the IndiGo fare for Kuwait to Bangalore (Rs.16,800 / 65 KWD) on 17 Jul 2026. Please share more details."><svg viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg><span class="i18n" data-en="Enquire Now" data-te="ఇప్పుడు విచారించండి">Enquire Now</span></a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Taxi services -->
+  <div class="section" id="taxi">
+    <div class="container">
+      <div class="taxi-panel">
+        <div class="taxi-head">
+          <div class="left">
+            <svg viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 16H9m10 0h3v-3.15a1 1 0 0 0-.84-.99L16 11l-2.7-3.6a1 1 0 0 0-.8-.4H5.5a1 1 0 0 0-.9.55L3 11H1a1 1 0 0 0-1 1v3h3"/><circle cx="7" cy="17" r="2"/><circle cx="17" cy="17" r="2"/></svg>
+            <div>
+              <h3><span class="i18n" data-en="TAXI SERVICES" data-te="టాక్సీ సేవలు">TAXI SERVICES</span></h3>
+              <div class="sub"><span class="i18n" data-en="Airport Pickup, Drop & Local Cabs" data-te="ఎయిర్‌పోర్ట్ పికప్, డ్రాప్ & లోకల్ క్యాబ్‌లు">Airport Pickup, Drop &amp; Local Cabs</span></div>
+            </div>
+          </div>
+          <a class="taxi-cta js-wa" data-wa-msg="Hi Miya Travels, I would like to book a taxi (airport pickup/drop or local cab) in Kuwait or India. Please share details."><span class="i18n" data-en="Book Taxi Now" data-te="ఇప్పుడు టాక్సీ బుక్ చేయండి">Book Taxi Now</span> <svg viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg></a>
+        </div>
+        <div class="taxi-grid">
+          <div class="taxi-item pickup">
+            <div class="taxi-img-wrap"><img class="ill" src="images/pickup.png" alt="Airport Pickup"></div>
+            <div class="taxi-text">
+              <div>
+                <div class="t1"><span class="i18n" data-en="Airport → Home" data-te="ఎయిర్‌పోర్ట్ → ఇల్లు">Airport → Home</span></div>
+                <div class="t2"><span class="i18n" data-en="Pickup" data-te="పికప్">Pickup</span></div>
+              </div>
+              <span class="arrow"><svg viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg></span>
+            </div>
+          </div>
+          <div class="taxi-item drop">
+            <div class="taxi-img-wrap"><img class="ill" src="images/drop.png" alt="Airport Drop"></div>
+            <div class="taxi-text">
+              <div>
+                <div class="t1"><span class="i18n" data-en="Home → Airport" data-te="ఇల్లు → ఎయిర్‌పోర్ట్">Home → Airport</span></div>
+                <div class="t2"><span class="i18n" data-en="Drop" data-te="డ్రాప్">Drop</span></div>
+              </div>
+              <span class="arrow"><svg viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg></span>
+            </div>
+          </div>
+          <div class="taxi-item local">
+            <div class="taxi-img-wrap"><img class="ill" src="images/taxi.png" alt="Local Taxi in Kuwait"></div>
+            <div class="taxi-text">
+              <div>
+                <div class="t1"><span class="i18n" data-en="Local Taxi" data-te="లోకల్ టాక్సీ">Local Taxi</span></div>
+                <div class="t2"><span class="i18n" data-en="Kuwait & India" data-te="కువైట్ & ఇండియా">Kuwait &amp; India</span></div>
+              </div>
+              <span class="arrow"><svg viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg></span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Services -->
+  <div class="section" id="services">
+    <div class="container">
+      <div class="section-head">
+        <div>
+          <span class="eyebrow-sm i18n" data-en="Beyond Flights" data-te="ఫ్లైట్‌లకు మించి">Beyond Flights</span>
+          <div class="left"><h2><span class="i18n" data-en="OUR SERVICES" data-te="మా సేవలు">OUR SERVICES</span></h2></div>
+        </div>
+      </div>
+      <div class="service-grid">
+        <div class="service-card medical">
+          <div class="service-info">
+            <div class="service-icon"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="7" width="18" height="14" rx="2"/><path d="M9 21V13h6v8"/><path d="M12 3v6M9 6h6"/></svg></div>
+            <h4><span class="i18n" data-en="GAMCA MEDICAL APPOINTMENT" data-te="గామ్కా మెడికల్ అపాయింట్‌మెంట్">GAMCA MEDICAL APPOINTMENT</span></h4>
+            <p><span class="i18n" data-en="Quick & Easy Medical Booking" data-te="త్వరిత & సులభమైన మెడికల్ బుకింగ్">Quick &amp; Easy Medical Booking</span></p>
+            <a class="service-btn blue js-wa" data-wa-msg="Hi Miya Travels, I would like to book a GAMCA medical appointment. Please assist."><span class="i18n" data-en="Book Appointment" data-te="అపాయింట్‌మెంట్ బుక్ చేయండి">Book Appointment</span> <svg viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg></a>
+          </div>
+          <img class="service-photo" src="images/Gamca.png" alt="GAMCA Medical Appointment">
+        </div>
+        <div class="service-card visa">
+          <div class="service-info">
+            <div class="service-icon"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="3" width="16" height="18" rx="2"/><circle cx="12" cy="9" r="2.5"/><path d="M8 17c0-2 2-3 4-3s4 1 4 3"/></svg></div>
+            <h4><span class="i18n" data-en="VISA SERVICES" data-te="వీసా సేవలు">VISA SERVICES</span></h4>
+            <p><span class="i18n" data-en="Visa Stamping, Assistance & All Visa Related Services" data-te="వీసా స్టాంపింగ్, సహాయం & అన్ని వీసా సంబంధిత సేవలు">Visa Stamping, Assistance &amp; All Visa Related Services</span></p>
+            <a class="service-btn green js-wa" data-wa-msg="Hi Miya Travels, I would like to enquire about visa services. Please assist."><span class="i18n" data-en="Enquire Now" data-te="ఇప్పుడు విచారించండి">Enquire Now</span> <svg viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg></a>
+          </div>
+          <img class="service-photo" src="images/passport.png" alt="Visa Services">
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Trust bar -->
+  <div class="container">
+    <div class="trust-bar">
+      <div class="trust-item">
+        <svg viewBox="0 0 24 24" stroke-width="1.6"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3a14 14 0 0 1 0 18M12 3a14 14 0 0 0 0 18"/></svg>
+        <div class="t1"><span class="i18n" data-en="IATA Accredited" data-te="IATA గుర్తింపు పొందిన">IATA Accredited</span></div>
+        <div class="t2"><span class="i18n" data-en="Travel Agency" data-te="ట్రావెల్ ఏజెన్సీ">Travel Agency</span></div>
+      </div>
+      <div class="trust-item">
+        <svg viewBox="0 0 24 24" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2l8 4v6c0 5-3.4 8.4-8 10-4.6-1.6-8-5-8-10V6l8-4z"/><path d="M8 12l2.5 2.5L16 9"/></svg>
+        <div class="t1"><span class="i18n" data-en="Secure Booking" data-te="సురక్షిత బుకింగ్">Secure Booking</span></div>
+        <div class="t2"><span class="i18n" data-en="100% Safe" data-te="100% సురక్షితం">100% Safe</span></div>
+      </div>
+      <div class="trust-item">
+        <svg viewBox="0 0 24 24" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 18v-6a9 9 0 0 1 18 0v6"/><path d="M21 19a2 2 0 0 1-2 2h-1v-8h3zM3 19a2 2 0 0 0 2 2h1v-8H3z"/></svg>
+        <div class="t1"><span class="i18n" data-en="Telugu Support" data-te="తెలుగు మద్దతు">Telugu Support</span></div>
+        <div class="t2"><span class="i18n" data-en="24/7 Assistance" data-te="24/7 సహాయం">24/7 Assistance</span></div>
+      </div>
+      <div class="trust-item">
+        <svg viewBox="0 0 24 24" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+        <div class="t1"><span class="i18n" data-en="Kuwait & India" data-te="కువైట్ & ఇండియా">Kuwait &amp; India</span></div>
+        <div class="t2"><span class="i18n" data-en="Office Support" data-te="ఆఫీస్ మద్దతు">Office Support</span></div>
+      </div>
+      <div class="trust-item">
+        <svg viewBox="0 0 24 24" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+        <div class="t1">10,000+</div>
+        <div class="t2"><span class="i18n" data-en="Happy Customers" data-te="సంతృప్త కస్టమర్లు">Happy Customers</span></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <footer id="contact">
+    <div class="container">
+      <div class="footer-top">
+        <div class="footer-brand">
+          <div class="brand">
+            <span class="footer-logo-chip"><img src="images/logo.png" alt="Miya Travels" class="brand-logo-img footer-logo-img"></span>
+            <div class="brand-text">
+              <div class="sub" style="color:#8891bb;"><span class="i18n" data-en="FLY • EXPLORE • ARRIVE" data-te="ప్రయాణం • అన్వేషణ • చేరుకోండి">FLY • EXPLORE • ARRIVE</span></div>
+            </div>
+          </div>
+          <p><span class="i18n" data-en="An IATA accredited travel agency trusted by 10,000+ customers for flights, group fares, visa services, GAMCA medical bookings and taxi transfers between Kuwait and India." data-te="10,000+ కస్టమర్ల నమ్మకం పొందిన IATA గుర్తింపు పొందిన ట్రావెల్ ఏజెన్సీ — ఫ్లైట్‌లు, గ్రూప్ ఫేర్‌లు, వీసా సేవలు, గామ్కా మెడికల్ బుకింగ్‌లు మరియు కువైట్-ఇండియా మధ్య టాక్సీ ట్రాన్స్‌ఫర్‌ల కోసం.">An IATA accredited travel agency trusted by 10,000+ customers for flights, group fares, visa services, GAMCA medical bookings and taxi transfers between Kuwait and India.</span></p>
+          <div class="footer-social">
+            <a href="#" aria-label="Facebook"><svg viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg></a>
+            <a href="#" aria-label="Instagram"><svg viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="4"/><line x1="17.5" y1="6.5" x2="17.5" y2="6.5"/></svg></a>
+            <a class="js-wa" aria-label="WhatsApp" data-wa-msg="Hi Miya Travels, I have a query."><svg viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg></a>
+          </div>
+        </div>
+
+        <div class="footer-col">
+          <h5><span class="i18n" data-en="Quick Links" data-te="త్వరిత లింకులు">Quick Links</span></h5>
+          <ul>
+            <li><a href="#home"><span class="i18n" data-en="Home" data-te="హోమ్">Home</span></a></li>
+            <li><a href="#fares"><span class="i18n" data-en="Group Fares" data-te="గ్రూప్ ఫేర్‌లు">Group Fares</span></a></li>
+            <li><a href="#taxi"><span class="i18n" data-en="Taxi Services" data-te="టాక్సీ సేవలు">Taxi Services</span></a></li>
+            <li><a href="#services"><span class="i18n" data-en="Visa & Medical" data-te="వీసా & మెడికల్">Visa &amp; Medical</span></a></li>
+          </ul>
+        </div>
+
+        <div class="footer-col">
+          <h5><span class="i18n" data-en="Services" data-te="సేవలు">Services</span></h5>
+          <ul>
+            <li><a href="#fares"><span class="i18n" data-en="Flight Booking" data-te="ఫ్లైట్ బుకింగ్">Flight Booking</span></a></li>
+            <li><a href="#fares"><span class="i18n" data-en="Group Fares" data-te="గ్రూప్ ఫేర్‌లు">Group Fares</span></a></li>
+            <li><a href="#taxi"><span class="i18n" data-en="Airport Taxi" data-te="ఎయిర్‌పోర్ట్ టాక్సీ">Airport Taxi</span></a></li>
+            <li><a href="#services"><span class="i18n" data-en="GAMCA Medical" data-te="గామ్కా మెడికల్">GAMCA Medical</span></a></li>
+            <li><a href="#services"><span class="i18n" data-en="Visa Assistance" data-te="వీసా సహాయం">Visa Assistance</span></a></li>
+          </ul>
+        </div>
+
+        <div class="footer-col">
+          <h5><span class="i18n" data-en="Get In Touch" data-te="సంప్రదించండి">Get In Touch</span></h5>
+          <ul class="footer-contact">
+            <li><a href="tel:+917770003158" style="display:flex; gap:10px; align-items:flex-start;"><svg viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.13.96.36 1.9.68 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.91.32 1.85.55 2.81.68A2 2 0 0 1 22 16.92z"/></svg>+91 77700 03158</a></li>
+            <li><a href="mailto:info@miyatravels.com" style="display:flex; gap:10px; align-items:flex-start;"><svg viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="M22 6l-10 7L2 6"/></svg>info@miyatravels.com</a></li>
+            <li><a href="https://www.google.com/maps/search/?api=1&query=MiYa+Travels+Chitvel+Road+near+NTR+Statue+Rajampet+Andhra+Pradesh+516115" target="_blank" rel="noopener" style="display:flex; gap:10px; align-items:flex-start;"><svg viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg><span class="i18n" data-en="Old Sumo Stand, Chitvel Road, near NTR Statue, Rajampet, Andhra Pradesh 516115" data-te="పాత సుమో స్టాండ్, చిట్వేల్ రోడ్, ఎన్టీఆర్ విగ్రహారం దగ్గర, రాజంపేట, ఆంధ్రప్రదేశ్ 516115">Old Sumo Stand, Chitvel Road, near NTR Statue, Rajampet, Andhra Pradesh 516115</span></a></li>
+            <li><a class="js-wa" style="display:flex; gap:10px; align-items:flex-start;" data-wa-msg="Hi Miya Travels, I have a query."><svg viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg><span class="i18n" data-en="Chat with us on WhatsApp" data-te="వాట్సాప్‌లో మాతో చాట్ చేయండి">Chat with us on WhatsApp</span></a></li>
+          </ul>
+          <a href="https://www.google.com/maps/search/?api=1&query=MiYa+Travels+Chitvel+Road+near+NTR+Statue+Rajampet+Andhra+Pradesh+516115" target="_blank" rel="noopener" class="footer-map">
+            <iframe src="https://www.google.com/maps?q=MiYa+Travels,+Chitvel+Road,+near+NTR+Statue,+Rajampet,+Andhra+Pradesh+516115&output=embed" width="100%" height="130" style="border:0; display:block; pointer-events:none;" loading="lazy" referrerpolicy="no-referrer-when-downgrade" title="Miya Travels location"></iframe>
+          </a>
+        </div>
+      </div>
+
+      <div class="footer-bottom">
+        <span><span class="i18n" data-en="© 2026 Miya Travels. All rights reserved." data-te="© 2026 మియా ట్రావెల్స్. అన్ని హక్కులు కలిగి ఉంది.">© 2026 Miya Travels. All rights reserved.</span></span>
+        <span><span class="i18n" data-en="IATA Accredited • Kuwait & India" data-te="IATA గుర్తింపు • కువైట్ & ఇండియా">IATA Accredited &bull; Kuwait &amp; India</span></span>
+      </div>
+    </div>
+  </footer>
+
+  <a class="float-whatsapp js-wa" aria-label="Chat on WhatsApp" data-wa-msg="Hi Miya Travels, I have a query.">
+    <svg viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+  </a>
+
+  <script>
+    document.getElementById('menuBtn').addEventListener('click', function(){
+      document.getElementById('mobileNav').classList.toggle('open');
+    });
+    document.querySelectorAll('.mobile-nav a').forEach(function(a){
+      a.addEventListener('click', function(){
+        document.getElementById('mobileNav').classList.remove('open');
+      });
+    });
+
+    function setLanguage(lang){
+      document.querySelectorAll('.i18n').forEach(function(el){
+        var text = el.getAttribute('data-' + lang);
+        if(text !== null) el.textContent = text;
+      });
+      document.getElementById('langToggle').querySelectorAll('span[data-lang]').forEach(function(s){
+        s.classList.toggle('active', s.getAttribute('data-lang') === lang);
+      });
+      document.documentElement.setAttribute('lang', lang);
+      localStorage.setItem('miya-lang', lang);
+    }
+
+    document.getElementById('langToggle').addEventListener('click', function(e){
+      var target = e.target.closest('span[data-lang]');
+      if(!target) return;
+      setLanguage(target.getAttribute('data-lang'));
+    });
+
+    var savedLang = localStorage.getItem('miya-lang');
+    if(savedLang === 'te') setLanguage('te');
+
+    var WHATSAPP_NUMBER = '917770003158';
+    function waLink(message){
+      return 'https://wa.me/' + WHATSAPP_NUMBER + '?text=' + encodeURIComponent(message);
+    }
+    function openWhatsApp(message){
+      window.open(waLink(message), '_blank', 'noopener');
+    }
+
+    document.querySelectorAll('.js-wa[data-wa-msg]').forEach(function(el){
+      el.setAttribute('href', waLink(el.getAttribute('data-wa-msg')));
+      el.setAttribute('target', '_blank');
+      el.setAttribute('rel', 'noopener');
+    });
+
+    var tripTabs = document.getElementById('tripTabs');
+    var returnDate = document.getElementById('returnDate');
+    var returnArrow = document.getElementById('returnArrow');
+    var currentTrip = 'oneway';
+
+    function selectTrip(type, btn){
+      currentTrip = type;
+      tripTabs.querySelectorAll('button').forEach(function(b){ b.classList.remove('active'); });
+      btn.classList.add('active');
+      var showReturn = type === 'roundtrip';
+      returnDate.style.display = showReturn ? '' : 'none';
+      returnArrow.style.display = showReturn ? '' : 'none';
+    }
+
+    tripTabs.querySelectorAll('button').forEach(function(btn){
+      btn.addEventListener('click', function(){ selectTrip(btn.getAttribute('data-trip'), btn); });
+    });
+
+    function enhanceSelect(select){
+      var wrap = document.createElement('div');
+      wrap.className = 'custom-select';
+      select.parentNode.insertBefore(wrap, select);
+      wrap.appendChild(select);
+      select.classList.add('custom-select-native');
+      select.setAttribute('tabindex', '-1');
+      select.setAttribute('aria-hidden', 'true');
+
+      var display = document.createElement('button');
+      display.type = 'button';
+      display.className = 'custom-select-display ' + select.getAttribute('data-display-class');
+      display.setAttribute('aria-haspopup', 'listbox');
+      display.setAttribute('aria-expanded', 'false');
+      wrap.appendChild(display);
+
+      var list = document.createElement('ul');
+      list.className = 'custom-select-list';
+      list.setAttribute('role', 'listbox');
+      wrap.appendChild(list);
+
+      function buildList(){
+        list.innerHTML = '';
+        Array.prototype.forEach.call(select.options, function(opt, i){
+          var li = document.createElement('li');
+          li.className = 'custom-select-option' + (i === select.selectedIndex ? ' selected' : '');
+          li.textContent = opt.textContent;
+          li.setAttribute('role', 'option');
+          li.addEventListener('click', function(){
+            select.selectedIndex = i;
+            select.dispatchEvent(new Event('change', { bubbles: true }));
+            close();
+          });
+          list.appendChild(li);
+        });
+      }
+
+      function refreshDisplay(){
+        var opt = select.options[select.selectedIndex];
+        display.textContent = opt ? opt.textContent : '';
+        list.querySelectorAll('.custom-select-option').forEach(function(li, i){
+          li.classList.toggle('selected', i === select.selectedIndex);
+        });
+      }
+
+      function onDocClick(e){
+        if(!wrap.contains(e.target)) close();
+      }
+      function open(){
+        buildList();
+        wrap.classList.add('open');
+        display.setAttribute('aria-expanded', 'true');
+        document.addEventListener('click', onDocClick);
+      }
+      function close(){
+        wrap.classList.remove('open');
+        display.setAttribute('aria-expanded', 'false');
+        document.removeEventListener('click', onDocClick);
+      }
+
+      display.addEventListener('click', function(){
+        if(wrap.classList.contains('open')) close(); else open();
+      });
+      display.addEventListener('keydown', function(e){
+        if(e.key === 'Escape') close();
+      });
+
+      buildList();
+      refreshDisplay();
+      select._refreshCustomSelect = refreshDisplay;
+    }
+
+    var fromSelect = document.getElementById('fromSelect');
+    var fromSub = document.getElementById('fromSub');
+    var toSelect = document.getElementById('toSelect');
+    var toSub = document.getElementById('toSub');
+
+    fromSelect.setAttribute('data-display-class', 'route-select');
+    toSelect.setAttribute('data-display-class', 'route-select');
+    enhanceSelect(fromSelect);
+    enhanceSelect(toSelect);
+
+    var cabinSelect = document.getElementById('cabinSelect');
+    cabinSelect.setAttribute('data-display-class', 'cabin-select');
+    enhanceSelect(cabinSelect);
+
+    function updateSub(selectEl, subEl){
+      var opt = selectEl.options[selectEl.selectedIndex];
+      subEl.textContent = opt ? opt.getAttribute('data-sub') : '';
+    }
+    function handleRouteChange(changed, other){
+      if(changed.value === other.value){
+        for(var i=0;i<other.options.length;i++){
+          if(other.options[i].value !== changed.value){ other.selectedIndex = i; break; }
+        }
+        if(other._refreshCustomSelect) other._refreshCustomSelect();
+      }
+      updateSub(fromSelect, fromSub);
+      updateSub(toSelect, toSub);
+    }
+    fromSelect.addEventListener('change', function(){ handleRouteChange(fromSelect, toSelect); });
+    toSelect.addEventListener('change', function(){ handleRouteChange(toSelect, fromSelect); });
+    updateSub(fromSelect, fromSub);
+    updateSub(toSelect, toSub);
+
+    function swapRoute(){
+      var tmp = fromSelect.selectedIndex;
+      fromSelect.selectedIndex = toSelect.selectedIndex;
+      toSelect.selectedIndex = tmp;
+      if(fromSelect._refreshCustomSelect) fromSelect._refreshCustomSelect();
+      if(toSelect._refreshCustomSelect) toSelect._refreshCustomSelect();
+      updateSub(fromSelect, fromSub);
+      updateSub(toSelect, toSub);
+    }
+    var swapBtn = document.getElementById('swapBtn');
+    swapBtn.addEventListener('click', swapRoute);
+    swapBtn.addEventListener('keydown', function(e){
+      if(e.key === 'Enter' || e.key === ' '){ e.preventDefault(); swapRoute(); }
+    });
+
+    var paxCount = 1;
+    var paxCountEl = document.getElementById('paxCount');
+    document.getElementById('paxMinus').addEventListener('click', function(){
+      if(paxCount > 1){ paxCount--; paxCountEl.textContent = paxCount; }
+    });
+    document.getElementById('paxPlus').addEventListener('click', function(){
+      if(paxCount < 20){ paxCount++; paxCountEl.textContent = paxCount; }
+    });
+
+    function tripTypeLabel(){
+      var active = tripTabs.querySelector('button.active');
+      return active ? active.textContent.trim() : 'One Way';
+    }
+
+    function formatDateForMessage(iso){
+      if(!iso) return '';
+      var parts = iso.split('-');
+      var months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+      return parseInt(parts[2],10) + ' ' + months[parseInt(parts[1],10)-1] + ' ' + parts[0];
+    }
+
+    function buildEnquiryMessage(){
+      var pax = paxCount + (paxCount === 1 ? ' Passenger' : ' Passengers');
+      var cabin = document.getElementById('cabinSelect').value;
+      var dateStr = formatDateForMessage(document.getElementById('departDate').value);
+      if(currentTrip === 'roundtrip'){
+        dateStr += ' → ' + formatDateForMessage(returnDate.value);
+      }
+      var groupNote = currentTrip === 'group' ? ' This is a group enquiry.' : '';
+      return 'Hi Miya Travels, I would like to enquire about a ' + tripTypeLabel() + ' flight from ' +
+        fromSelect.value + ' to ' + toSelect.value + ' on ' + dateStr +
+        ' for ' + pax + ', ' + cabin + ' class.' + groupNote + ' Please share the best fare.';
+    }
+
+    document.getElementById('mainWhatsappBtn').addEventListener('click', function(){
+      openWhatsApp(buildEnquiryMessage());
+    });
+    document.getElementById('heroWhatsappBtn').addEventListener('click', function(){
+      openWhatsApp(buildEnquiryMessage());
+    });
+  </script>
+</body>
+</html>
