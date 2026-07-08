@@ -209,7 +209,7 @@
   .route-field .sub{font-size:10.5px; color:var(--muted); margin-top:1px;}
   .route-select{
     appearance:none; -webkit-appearance:none; border:none; background:transparent;
-    font-size:15px; font-weight:800; color:var(--ink); font-family:inherit; cursor:pointer;
+    font-size:15px; font-weight:800; color:var(--ink); font-family:inherit; cursor:text;
     width:100%; padding:0; margin:0;
   }
   .route-select:focus{outline:2px solid var(--purple); outline-offset:2px; border-radius:4px;}
@@ -289,6 +289,18 @@
 
   /* ---------- Fare cards ---------- */
   .fare-scroll{display:grid; grid-template-columns:repeat(auto-fit,minmax(240px,1fr)); gap:18px;}
+  .fare-skeleton{
+    background:linear-gradient(90deg, var(--lav-bg) 25%, #f5f4fc 37%, var(--lav-bg) 63%);
+    background-size:400% 100%; animation:fareShimmer 1.4s ease infinite;
+    border-radius:16px; min-height:220px; border:1px solid var(--line);
+  }
+  @keyframes fareShimmer{0%{background-position:100% 50%;} 100%{background-position:0 50%;}}
+  .fare-empty{
+    grid-column:1/-1; text-align:center; padding:44px 20px; color:var(--muted);
+    border:1px dashed var(--line); border-radius:16px;
+  }
+  .fare-empty p{font-size:13.5px; font-weight:600; margin-bottom:16px;}
+  .fare-empty .btn-primary{display:inline-flex;}
   .fare-card{
     background:var(--white); border:1px solid var(--line); border-radius:16px;
     box-shadow:0 4px 14px rgba(20,20,60,0.08); transition:transform .2s ease, box-shadow .2s ease;
@@ -577,30 +589,24 @@
       <div class="route-row">
         <div class="route-field">
           <div class="label"><svg viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg><span class="i18n" data-en="From" data-te="నుండి">From</span></div>
-          <select class="route-select" id="fromSelect" aria-label="From">
-            <option value="Kuwait (KWI)" data-sub="Kuwait International Airport">Kuwait (KWI)</option>
-            <option value="Hyderabad (HYD)" data-sub="Rajiv Gandhi International Airport">Hyderabad (HYD)</option>
-            <option value="Chennai (MAA)" data-sub="Chennai International Airport">Chennai (MAA)</option>
-            <option value="Bangalore (BLR)" data-sub="Kempegowda International Airport">Bangalore (BLR)</option>
-            <option value="Delhi (DEL)" data-sub="Indira Gandhi International Airport">Delhi (DEL)</option>
-            <option value="Mumbai (BOM)" data-sub="Chhatrapati Shivaji Maharaj International Airport">Mumbai (BOM)</option>
-          </select>
+          <input type="text" class="route-select" id="fromSelect" aria-label="From" list="airportList" autocomplete="off" placeholder="City or airport" value="Kuwait (KWI)">
           <div class="sub" id="fromSub">Kuwait International Airport</div>
         </div>
         <div class="swap-btn" id="swapBtn" role="button" tabindex="0" aria-label="Swap origin and destination"><svg viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 1l4 4-4 4M3 11V9a4 4 0 0 1 4-4h14M7 23l-4-4 4-4M21 13v2a4 4 0 0 1-4 4H3"/></svg></div>
         <div class="route-field">
           <div class="label"><span class="i18n" data-en="To" data-te="కు">To</span><svg viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg></div>
-          <select class="route-select" id="toSelect" aria-label="To">
-            <option value="Kuwait (KWI)" data-sub="Kuwait International Airport">Kuwait (KWI)</option>
-            <option value="Hyderabad (HYD)" data-sub="Rajiv Gandhi International Airport" selected>Hyderabad (HYD)</option>
-            <option value="Chennai (MAA)" data-sub="Chennai International Airport">Chennai (MAA)</option>
-            <option value="Bangalore (BLR)" data-sub="Kempegowda International Airport">Bangalore (BLR)</option>
-            <option value="Delhi (DEL)" data-sub="Indira Gandhi International Airport">Delhi (DEL)</option>
-            <option value="Mumbai (BOM)" data-sub="Chhatrapati Shivaji Maharaj International Airport">Mumbai (BOM)</option>
-          </select>
+          <input type="text" class="route-select" id="toSelect" aria-label="To" list="airportList" autocomplete="off" placeholder="City or airport" value="Hyderabad (HYD)">
           <div class="sub" id="toSub">Rajiv Gandhi International Airport</div>
         </div>
       </div>
+      <datalist id="airportList">
+        <option value="Kuwait (KWI)" data-sub="Kuwait International Airport"></option>
+        <option value="Hyderabad (HYD)" data-sub="Rajiv Gandhi International Airport"></option>
+        <option value="Chennai (MAA)" data-sub="Chennai International Airport"></option>
+        <option value="Bangalore (BLR)" data-sub="Kempegowda International Airport"></option>
+        <option value="Delhi (DEL)" data-sub="Indira Gandhi International Airport"></option>
+        <option value="Mumbai (BOM)" data-sub="Chhatrapati Shivaji Maharaj International Airport"></option>
+      </datalist>
 
       <div class="meta-row">
         <div class="meta-field">
@@ -654,66 +660,10 @@
         <a class="link js-wa" data-wa-msg="Hi Miya Travels, please share the full list of today's group fares."><span class="i18n" data-en="View All Fares" data-te="అన్ని ఫేర్‌లు చూడండి">View All Fares</span> <svg viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18l6-6-6-6"/></svg></a>
       </div>
 
-      <div class="fare-scroll">
-        <!-- Card 1 -->
-        <div class="fare-card">
-          <div class="ribbon best"><span class="i18n" data-en="BEST PRICE" data-te="ఉత్తమ ధర">BEST PRICE</span></div>
-          <div class="fare-top">
-            <div class="fare-info">
-              <div class="fare-route">Kuwait → Hyderabad</div>
-              <div class="fare-airline airline-red">AIR INDIA <em style="font-style:normal;">express</em></div>
-              <div class="fare-details">
-                <div class="row"><svg viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg><span class="i18n" data-en="15 Jul 2026 · Direct Flight" data-te="15 జూలై 2026 · డైరెక్ట్ ఫ్లైట్">15 Jul 2026 · Direct Flight</span></div>
-                <div class="row"><svg viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 7h-3V5a2 2 0 0 0-2-2H9a2 2 0 0 0-2 2v2H4a1 1 0 0 0-1 1v11a1 1 0 0 0 1 1h16a1 1 0 0 0 1-1V8a1 1 0 0 0-1-1zM9 5h6v2H9z"/></svg><span class="i18n" data-en="30kg Baggage" data-te="30kg బ్యాగేజ్">30kg Baggage</span></div>
-              </div>
-            </div>
-            <img class="fare-illustration" src="images/charminor.png" alt="Charminar, Hyderabad">
-          </div>
-          <div class="fare-price-row">
-            <div class="fare-price"><div class="inr">₹18,000</div><div class="kwd">69 KWD</div></div>
-            <a class="enquire-btn red js-wa" data-wa-msg="Hi Miya Travels, I'm interested in the AIR INDIA express fare for Kuwait to Hyderabad (Rs.18,000 / 69 KWD) on 15 Jul 2026. Please share more details."><svg viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg><span class="i18n" data-en="Enquire Now" data-te="ఇప్పుడు విచారించండి">Enquire Now</span></a>
-          </div>
-        </div>
-
-        <!-- Card 2 -->
-        <div class="fare-card">
-          <div class="ribbon groupA"><span class="i18n" data-en="GROUP FARE" data-te="గ్రూప్ ఫేర్">GROUP FARE</span></div>
-          <div class="fare-top">
-            <div class="fare-info">
-              <div class="fare-route">Kuwait → Chennai</div>
-              <div class="fare-airline airline-blue">Jazeera airways</div>
-              <div class="fare-details">
-                <div class="row"><svg viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg><span class="i18n" data-en="16 Jul 2026 · Direct Flight" data-te="16 జూలై 2026 · డైరెక్ట్ ఫ్లైట్">16 Jul 2026 · Direct Flight</span></div>
-                <div class="row"><svg viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 7h-3V5a2 2 0 0 0-2-2H9a2 2 0 0 0-2 2v2H4a1 1 0 0 0-1 1v11a1 1 0 0 0 1 1h16a1 1 0 0 0 1-1V8a1 1 0 0 0-1-1zM9 5h6v2H9z"/></svg><span class="i18n" data-en="30kg Baggage" data-te="30kg బ్యాగేజ్">30kg Baggage</span></div>
-              </div>
-            </div>
-            <img class="fare-illustration" src="images/chennai.png" alt="Lighthouse, Chennai">
-          </div>
-          <div class="fare-price-row">
-            <div class="fare-price"><div class="inr">₹17,500</div><div class="kwd">67 KWD</div></div>
-            <a class="enquire-btn navy js-wa" data-wa-msg="Hi Miya Travels, I'm interested in the Jazeera airways fare for Kuwait to Chennai (Rs.17,500 / 67 KWD) on 16 Jul 2026. Please share more details."><svg viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg><span class="i18n" data-en="Enquire Now" data-te="ఇప్పుడు విచారించండి">Enquire Now</span></a>
-          </div>
-        </div>
-
-        <!-- Card 3 -->
-        <div class="fare-card">
-          <div class="ribbon groupB"><span class="i18n" data-en="GROUP FARE" data-te="గ్రూప్ ఫేర్">GROUP FARE</span></div>
-          <div class="fare-top">
-            <div class="fare-info">
-              <div class="fare-route">Kuwait → Bangalore</div>
-              <div class="fare-airline airline-navy">IndiGo</div>
-              <div class="fare-details">
-                <div class="row"><svg viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg><span class="i18n" data-en="17 Jul 2026 · Direct Flight" data-te="17 జూలై 2026 · డైరెక్ట్ ఫ్లైట్">17 Jul 2026 · Direct Flight</span></div>
-                <div class="row"><svg viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 7h-3V5a2 2 0 0 0-2-2H9a2 2 0 0 0-2 2v2H4a1 1 0 0 0-1 1v11a1 1 0 0 0 1 1h16a1 1 0 0 0 1-1V8a1 1 0 0 0-1-1zM9 5h6v2H9z"/></svg><span class="i18n" data-en="30kg Baggage" data-te="30kg బ్యాగేజ్">30kg Baggage</span></div>
-              </div>
-            </div>
-            <img class="fare-illustration" src="images/bangolore.png" alt="Vidhana Soudha, Bangalore">
-          </div>
-          <div class="fare-price-row">
-            <div class="fare-price"><div class="inr">₹16,800</div><div class="kwd">65 KWD</div></div>
-            <a class="enquire-btn green js-wa" data-wa-msg="Hi Miya Travels, I'm interested in the IndiGo fare for Kuwait to Bangalore (Rs.16,800 / 65 KWD) on 17 Jul 2026. Please share more details."><svg viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg><span class="i18n" data-en="Enquire Now" data-te="ఇప్పుడు విచారించండి">Enquire Now</span></a>
-          </div>
-        </div>
+      <div class="fare-scroll" id="fareScroll">
+        <div class="fare-skeleton"></div>
+        <div class="fare-skeleton"></div>
+        <div class="fare-skeleton"></div>
       </div>
     </div>
   </div>
@@ -1035,41 +985,31 @@
     var fromSub = document.getElementById('fromSub');
     var toSelect = document.getElementById('toSelect');
     var toSub = document.getElementById('toSub');
-
-    fromSelect.setAttribute('data-display-class', 'route-select');
-    toSelect.setAttribute('data-display-class', 'route-select');
-    enhanceSelect(fromSelect);
-    enhanceSelect(toSelect);
+    var airportList = document.getElementById('airportList');
 
     var cabinSelect = document.getElementById('cabinSelect');
     cabinSelect.setAttribute('data-display-class', 'cabin-select');
     enhanceSelect(cabinSelect);
 
-    function updateSub(selectEl, subEl){
-      var opt = selectEl.options[selectEl.selectedIndex];
-      subEl.textContent = opt ? opt.getAttribute('data-sub') : '';
-    }
-    function handleRouteChange(changed, other){
-      if(changed.value === other.value){
-        for(var i=0;i<other.options.length;i++){
-          if(other.options[i].value !== changed.value){ other.selectedIndex = i; break; }
-        }
-        if(other._refreshCustomSelect) other._refreshCustomSelect();
+    function lookupAirportSub(value){
+      var opts = airportList.querySelectorAll('option');
+      for(var i=0;i<opts.length;i++){
+        if(opts[i].value === value) return opts[i].getAttribute('data-sub');
       }
-      updateSub(fromSelect, fromSub);
-      updateSub(toSelect, toSub);
+      return '';
     }
-    fromSelect.addEventListener('change', function(){ handleRouteChange(fromSelect, toSelect); });
-    toSelect.addEventListener('change', function(){ handleRouteChange(toSelect, fromSelect); });
+    function updateSub(inputEl, subEl){
+      subEl.textContent = lookupAirportSub(inputEl.value);
+    }
+    fromSelect.addEventListener('input', function(){ updateSub(fromSelect, fromSub); });
+    toSelect.addEventListener('input', function(){ updateSub(toSelect, toSub); });
     updateSub(fromSelect, fromSub);
     updateSub(toSelect, toSub);
 
     function swapRoute(){
-      var tmp = fromSelect.selectedIndex;
-      fromSelect.selectedIndex = toSelect.selectedIndex;
-      toSelect.selectedIndex = tmp;
-      if(fromSelect._refreshCustomSelect) fromSelect._refreshCustomSelect();
-      if(toSelect._refreshCustomSelect) toSelect._refreshCustomSelect();
+      var tmp = fromSelect.value;
+      fromSelect.value = toSelect.value;
+      toSelect.value = tmp;
       updateSub(fromSelect, fromSub);
       updateSub(toSelect, toSub);
     }
@@ -1118,6 +1058,103 @@
     });
     document.getElementById('heroWhatsappBtn').addEventListener('click', function(){
       openWhatsApp(buildEnquiryMessage());
+    });
+  </script>
+
+  <script type="module">
+    import { db } from "./js/firebase.js";
+    import {
+      collection, query, where, onSnapshot
+    } from "https://www.gstatic.com/firebasejs/12.15.0/firebase-firestore.js";
+
+    var fareScroll = document.getElementById('fareScroll');
+
+    function escapeHtml(s){
+      return String(s == null ? '' : s).replace(/[&<>"']/g, function(c){
+        return { '&':'&amp;', '<':'&lt;', '>':'&gt;', '"':'&quot;', "'":'&#39;' }[c];
+      });
+    }
+
+    function formatCardDate(iso){
+      if(!iso) return '';
+      var parts = iso.split('-');
+      var months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+      return parseInt(parts[2],10) + ' ' + months[parseInt(parts[1],10)-1] + ' ' + parts[0];
+    }
+
+    function buildRibbon(ribbonType){
+      if(ribbonType === 'best'){
+        return '<div class="ribbon best"><span class="i18n" data-en="BEST PRICE" data-te="ఉత్తమ ధర">BEST PRICE</span></div>';
+      }
+      if(ribbonType === 'groupA' || ribbonType === 'groupB'){
+        return '<div class="ribbon ' + ribbonType + '"><span class="i18n" data-en="GROUP FARE" data-te="గ్రూప్ ఫేర్">GROUP FARE</span></div>';
+      }
+      return '';
+    }
+
+    function buildCard(t){
+      var dateStr = formatCardDate(t.flightDate);
+      var priceInr = Number(t.priceInr || 0);
+      var msg = 'Hi Miya Travels, I\'m interested in the ' + t.airline + ' fare for ' + t.routeFrom +
+        ' to ' + t.routeTo + ' (Rs.' + priceInr.toLocaleString('en-IN') + ' / ' + t.priceKwd + ' KWD) on ' +
+        dateStr + '. Please share more details.';
+      return '' +
+      '<div class="fare-card">' +
+        buildRibbon(t.ribbonType) +
+        '<div class="fare-top">' +
+          '<div class="fare-info">' +
+            '<div class="fare-route">' + escapeHtml(t.routeFrom) + ' → ' + escapeHtml(t.routeTo) + '</div>' +
+            '<div class="fare-airline airline-' + (t.airlineColor || 'navy') + '">' + escapeHtml(t.airline) + '</div>' +
+            '<div class="fare-details">' +
+              '<div class="row"><svg viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg><span>' + escapeHtml(dateStr) + ' · ' + escapeHtml(t.flightType || '') + '</span></div>' +
+              '<div class="row"><svg viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 7h-3V5a2 2 0 0 0-2-2H9a2 2 0 0 0-2 2v2H4a1 1 0 0 0-1 1v11a1 1 0 0 0 1 1h16a1 1 0 0 0 1-1V8a1 1 0 0 0-1-1zM9 5h6v2H9z"/></svg><span>' + escapeHtml(t.baggage || '') + '</span></div>' +
+            '</div>' +
+          '</div>' +
+          '<img class="fare-illustration" src="images/' + escapeHtml(t.image || 'plane.png') + '" alt="' + escapeHtml(t.imageAlt || '') + '">' +
+        '</div>' +
+        '<div class="fare-price-row">' +
+          '<div class="fare-price"><div class="inr">₹' + priceInr.toLocaleString('en-IN') + '</div><div class="kwd">' + t.priceKwd + ' KWD</div></div>' +
+          '<a class="enquire-btn ' + (t.enquireColor || 'navy') + ' js-wa" data-wa-msg="' + escapeHtml(msg) + '"><svg viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg><span class="i18n" data-en="Enquire Now" data-te="ఇప్పుడు విచారించండి">Enquire Now</span></a>' +
+        '</div>' +
+      '</div>';
+    }
+
+    var EMPTY_STATE_HTML = '<div class="fare-empty">' +
+      '<p class="i18n" data-en="No group fares are live right now. Message us on WhatsApp for the latest prices." data-te="ఇప్పుడు గ్రూప్ ఫేర్‌లు అందుబాటులో లేవు. తాజా ధరల కోసం వాట్సాప్‌లో సంప్రదించండి.">No group fares are live right now. Message us on WhatsApp for the latest prices.</p>' +
+      '<a class="btn btn-primary js-wa" data-wa-msg="Hi Miya Travels, please share today\'s group fares.">' +
+        '<span class="i18n" data-en="Get Fare on WhatsApp" data-te="వాట్సాప్‌లో ఫేర్ పొందండి">Get Fare on WhatsApp</span>' +
+      '</a>' +
+    '</div>';
+
+    function finishRender(){
+      fareScroll.querySelectorAll('.js-wa[data-wa-msg]').forEach(function(el){
+        if(window.waLink){
+          el.setAttribute('href', window.waLink(el.getAttribute('data-wa-msg')));
+          el.setAttribute('target', '_blank');
+          el.setAttribute('rel', 'noopener');
+        }
+      });
+      if(window.setLanguage){
+        window.setLanguage(document.documentElement.getAttribute('lang') || 'en');
+      }
+    }
+
+    var ticketsQuery = query(collection(db, 'tickets'), where('active', '==', true));
+    onSnapshot(ticketsQuery, function(snapshot){
+      if(snapshot.empty){
+        fareScroll.innerHTML = EMPTY_STATE_HTML;
+        finishRender();
+        return;
+      }
+      var tickets = [];
+      snapshot.forEach(function(docSnap){ tickets.push(docSnap.data()); });
+      tickets.sort(function(a, b){ return (a.order || 0) - (b.order || 0); });
+      fareScroll.innerHTML = tickets.map(buildCard).join('');
+      finishRender();
+    }, function(err){
+      console.error('Could not load live fares from Firestore:', err);
+      fareScroll.innerHTML = EMPTY_STATE_HTML;
+      finishRender();
     });
   </script>
 </body>

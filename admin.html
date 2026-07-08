@@ -1,0 +1,507 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Miya Travels — Admin</title>
+<link rel="icon" type="image/x-icon" href="images/favicon.ico">
+<style>
+  :root{
+    --navy:#0c1c4e;
+    --navy-2:#1b2a6b;
+    --purple:#5b34c9;
+    --purple-2:#3d1f9e;
+    --gold:#f5c518;
+    --green:#1e8e3e;
+    --red:#e5342b;
+    --lav-bg:#eeecfb;
+    --ink:#12163a;
+    --muted:#6b7285;
+    --line:#e7e8f0;
+    --white:#ffffff;
+    font-family:'Segoe UI', Arial, sans-serif;
+  }
+  *{box-sizing:border-box; margin:0; padding:0;}
+  body{background:var(--lav-bg); color:var(--ink); min-height:100vh;}
+  a{color:inherit; text-decoration:none;}
+  .topbar{
+    background:var(--navy); color:var(--white); padding:14px 24px;
+    display:flex; align-items:center; justify-content:space-between; gap:12px; flex-wrap:wrap;
+  }
+  .topbar .brand{font-size:16px; font-weight:800; letter-spacing:0.3px;}
+  .topbar .brand span{color:var(--gold);}
+  .topbar .who{display:flex; align-items:center; gap:14px; font-size:13px;}
+  .btn{
+    border:none; border-radius:8px; padding:9px 16px; font-size:13px; font-weight:700;
+    cursor:pointer; font-family:inherit;
+  }
+  .btn-primary{background:var(--purple); color:var(--white);}
+  .btn-primary:hover{background:var(--purple-2);}
+  .btn-ghost{background:rgba(255,255,255,0.12); color:var(--white);}
+  .btn-ghost:hover{background:rgba(255,255,255,0.22);}
+  .btn-outline{background:var(--white); color:var(--purple); border:1px solid var(--purple);}
+  .btn-outline:hover{background:var(--lav-bg);}
+  .btn-danger{background:var(--red); color:var(--white);}
+  .btn-danger:hover{background:#c62b23;}
+  .btn-small{padding:6px 12px; font-size:12px;}
+  .btn:disabled{opacity:0.6; cursor:not-allowed;}
+
+  .wrap{max-width:1100px; margin:0 auto; padding:28px 20px 60px;}
+
+  /* ---------- Auth loading ---------- */
+  .auth-loading{min-height:calc(100vh - 60px); display:flex; align-items:center; justify-content:center;}
+  .spinner{width:32px; height:32px; border:3px solid var(--line); border-top-color:var(--purple); border-radius:50%; animation:adminSpin .8s linear infinite;}
+  @keyframes adminSpin{to{transform:rotate(360deg);}}
+
+  /* ---------- Login ---------- */
+  .login-screen{min-height:calc(100vh - 60px); display:none; align-items:center; justify-content:center; padding:20px;}
+  .login-card{
+    background:var(--white); border-radius:16px; padding:36px 32px; max-width:380px; width:100%;
+    box-shadow:0 18px 40px rgba(20,20,60,0.14);
+  }
+  .login-card h1{font-size:19px; font-weight:800; margin-bottom:6px;}
+  .login-card p.sub{font-size:13px; color:var(--muted); margin-bottom:22px;}
+  .field{margin-bottom:16px;}
+  .field label{display:block; font-size:12px; font-weight:700; color:var(--muted); margin-bottom:6px;}
+  .field input, .field select, .field textarea{
+    width:100%; padding:10px 12px; border:1px solid var(--line); border-radius:8px;
+    font-size:14px; font-family:inherit; color:var(--ink); background:var(--white);
+  }
+  .field input:focus, .field select:focus, .field textarea:focus{outline:2px solid var(--purple); outline-offset:1px;}
+  .field-row{display:grid; grid-template-columns:1fr 1fr; gap:12px;}
+  .checkbox-row{display:flex; align-items:center; gap:8px; margin-bottom:16px;}
+  .checkbox-row input{width:auto;}
+  .error-msg{
+    background:#fdecea; color:var(--red); font-size:12.5px; font-weight:600; padding:10px 12px;
+    border-radius:8px; margin-bottom:14px; display:none;
+  }
+  .edit-banner{
+    background:var(--lav-bg); color:var(--purple-2); font-size:12.5px; font-weight:600; padding:10px 12px;
+    border-radius:8px; margin-bottom:14px; border:1px solid var(--purple);
+  }
+  .login-card .btn-primary{width:100%; padding:11px;}
+
+  /* ---------- Dashboard ---------- */
+  .dashboard{display:none;}
+  .panel{
+    background:var(--white); border-radius:14px; padding:22px 24px; margin-bottom:22px;
+    box-shadow:0 4px 16px rgba(20,20,60,0.06); border:1px solid var(--line);
+  }
+  .panel h2{font-size:16px; font-weight:800; margin-bottom:4px;}
+  .panel .sub{font-size:12.5px; color:var(--muted); margin-bottom:18px;}
+  .form-grid{display:grid; grid-template-columns:repeat(3,1fr); gap:14px;}
+  .form-grid .span-3{grid-column:span 3;}
+  .form-actions{display:flex; gap:10px; margin-top:18px; flex-wrap:wrap;}
+  .save-status{font-size:12.5px; font-weight:700; color:var(--green); display:none; align-self:center;}
+
+  table{width:100%; border-collapse:collapse; font-size:13px;}
+  th{text-align:left; font-size:11.5px; text-transform:uppercase; letter-spacing:0.4px; color:var(--muted); padding:8px 10px; border-bottom:2px solid var(--line);}
+  td{padding:10px; border-bottom:1px solid var(--line); vertical-align:middle;}
+  tr:hover td{background:#fafafe;}
+  .pill{display:inline-block; padding:3px 9px; border-radius:999px; font-size:11px; font-weight:800; color:var(--white);}
+  .pill.best{background:var(--red);}
+  .pill.groupA{background:var(--navy);}
+  .pill.groupB{background:var(--green);}
+  .pill.none{background:var(--muted);}
+  .status-dot{display:inline-block; width:8px; height:8px; border-radius:50%; margin-right:5px;}
+  .status-dot.on{background:var(--green);}
+  .status-dot.off{background:var(--muted);}
+  .row-actions{display:flex; gap:6px;}
+  .empty-row td{text-align:center; color:var(--muted); padding:28px;}
+</style>
+</head>
+<body>
+
+  <div class="topbar">
+    <div class="brand">MIYA <span>TRAVELS</span> — Admin</div>
+    <div class="who" id="whoBar" style="display:none;">
+      <span id="whoEmail"></span>
+      <button class="btn btn-ghost btn-small" id="signOutBtn">Sign Out</button>
+    </div>
+  </div>
+
+  <!-- Auth loading (shown until Firebase reports the session state, avoids login/dashboard flicker on refresh) -->
+  <div class="auth-loading" id="authLoading"><div class="spinner"></div></div>
+
+  <!-- Login screen -->
+  <div class="login-screen" id="loginScreen">
+    <div class="login-card">
+      <h1>Admin Login</h1>
+      <p class="sub">Sign in to manage group fare tickets shown on the landing page.</p>
+      <div class="error-msg" id="loginError"></div>
+      <form id="loginForm">
+        <div class="field">
+          <label for="loginEmail">Email</label>
+          <input type="email" id="loginEmail" required autocomplete="username">
+        </div>
+        <div class="field">
+          <label for="loginPassword">Password</label>
+          <input type="password" id="loginPassword" required autocomplete="current-password">
+        </div>
+        <button type="submit" class="btn btn-primary" id="loginBtn">Sign In</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- Dashboard -->
+  <div class="dashboard" id="dashboard">
+    <div class="wrap">
+
+      <div class="panel">
+        <h2 id="formTitle">Add New Ticket</h2>
+        <p class="sub">These details render as a fare card in the "Today's Group Fares" section on the landing page.</p>
+        <div class="edit-banner" id="editBanner" style="display:none;">Editing ticket: <strong id="editBannerRoute"></strong> — saving will update this ticket, not create a new one.</div>
+        <div class="error-msg" id="formError"></div>
+        <form id="ticketForm">
+          <input type="hidden" id="ticketId">
+          <div class="form-grid">
+            <div class="field">
+              <label for="routeFrom">From</label>
+              <input type="text" id="routeFrom" placeholder="Kuwait" required>
+            </div>
+            <div class="field">
+              <label for="routeTo">To</label>
+              <input type="text" id="routeTo" placeholder="Hyderabad" required>
+            </div>
+            <div class="field">
+              <label for="airline">Airline</label>
+              <input type="text" id="airline" placeholder="AIR INDIA express" required>
+            </div>
+
+            <div class="field">
+              <label for="airlineColor">Airline Text Color</label>
+              <select id="airlineColor">
+                <option value="red">Red</option>
+                <option value="blue">Blue</option>
+                <option value="navy">Navy</option>
+              </select>
+            </div>
+            <div class="field">
+              <label for="flightDate">Flight Date</label>
+              <input type="date" id="flightDate" required>
+            </div>
+            <div class="field">
+              <label for="flightType">Flight Type</label>
+              <input type="text" id="flightType" placeholder="Direct Flight" value="Direct Flight" required>
+            </div>
+
+            <div class="field">
+              <label for="baggage">Baggage</label>
+              <input type="text" id="baggage" placeholder="30kg Baggage" value="30kg Baggage" required>
+            </div>
+            <div class="field">
+              <label for="priceInr">Price (INR)</label>
+              <input type="number" id="priceInr" min="0" step="1" placeholder="18000" required>
+            </div>
+            <div class="field">
+              <label for="priceKwd">Price (KWD)</label>
+              <input type="number" id="priceKwd" min="0" step="0.01" placeholder="69" required>
+            </div>
+
+            <div class="field">
+              <label for="ribbonType">Ribbon Badge</label>
+              <select id="ribbonType">
+                <option value="none">None</option>
+                <option value="best">BEST PRICE (red)</option>
+                <option value="groupA">GROUP FARE (navy)</option>
+                <option value="groupB">GROUP FARE (green)</option>
+              </select>
+            </div>
+            <div class="field">
+              <label for="image">Illustration</label>
+              <select id="image">
+                <option value="charminor.png" data-alt="Charminar, Hyderabad">Charminar (Hyderabad)</option>
+                <option value="chennai.png" data-alt="Lighthouse, Chennai">Lighthouse (Chennai)</option>
+                <option value="bangolore.png" data-alt="Vidhana Soudha, Bangalore">Vidhana Soudha (Bangalore)</option>
+                <option value="plane.png" data-alt="Flight">Generic Plane</option>
+              </select>
+            </div>
+            <div class="field">
+              <label for="enquireColor">Enquire Button Color</label>
+              <select id="enquireColor">
+                <option value="red">Red</option>
+                <option value="navy">Navy</option>
+                <option value="green">Green</option>
+              </select>
+            </div>
+
+            <div class="field">
+              <label for="order">Display Order</label>
+              <input type="number" id="order" min="0" step="1" value="0" required>
+            </div>
+            <div class="field" style="display:flex; align-items:flex-end;">
+              <div class="checkbox-row" style="margin-bottom:10px;">
+                <input type="checkbox" id="active" checked>
+                <label for="active" style="margin-bottom:0;">Show on landing page</label>
+              </div>
+            </div>
+          </div>
+          <div class="form-actions">
+            <button type="submit" class="btn btn-primary" id="saveBtn">Save Ticket</button>
+            <button type="button" class="btn btn-outline" id="cancelEditBtn" style="display:none;">Cancel Edit</button>
+            <span class="save-status" id="saveStatus">Saved ✓</span>
+          </div>
+        </form>
+      </div>
+
+      <div class="panel">
+        <h2>All Tickets</h2>
+        <p class="sub">Edit or delete tickets. Changes appear on the landing page immediately.</p>
+        <div style="overflow-x:auto;">
+          <table>
+            <thead>
+              <tr>
+                <th>Order</th>
+                <th>Route</th>
+                <th>Airline</th>
+                <th>Price</th>
+                <th>Badge</th>
+                <th>Status</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody id="ticketsBody">
+              <tr class="empty-row"><td colspan="7">Loading tickets…</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <script type="module">
+    import { auth, db } from "./js/firebase.js";
+    import {
+      onAuthStateChanged, signInWithEmailAndPassword, signOut
+    } from "https://www.gstatic.com/firebasejs/12.15.0/firebase-auth.js";
+    import {
+      collection, query, orderBy, onSnapshot, addDoc, updateDoc, deleteDoc, doc, serverTimestamp
+    } from "https://www.gstatic.com/firebasejs/12.15.0/firebase-firestore.js";
+
+    var authLoading = document.getElementById('authLoading');
+    var loginScreen = document.getElementById('loginScreen');
+    var dashboard = document.getElementById('dashboard');
+    var whoBar = document.getElementById('whoBar');
+    var whoEmail = document.getElementById('whoEmail');
+    var loginForm = document.getElementById('loginForm');
+    var loginError = document.getElementById('loginError');
+    var loginBtn = document.getElementById('loginBtn');
+
+    function showError(el, msg){
+      el.textContent = msg;
+      el.style.display = msg ? 'block' : 'none';
+    }
+
+    loginForm.addEventListener('submit', function(e){
+      e.preventDefault();
+      showError(loginError, '');
+      loginBtn.disabled = true;
+      loginBtn.textContent = 'Signing in…';
+      var email = document.getElementById('loginEmail').value.trim();
+      var password = document.getElementById('loginPassword').value;
+      signInWithEmailAndPassword(auth, email, password)
+        .catch(function(err){
+          showError(loginError, 'Sign in failed: ' + (err.code === 'auth/invalid-credential' ? 'invalid email or password.' : err.message));
+        })
+        .finally(function(){
+          loginBtn.disabled = false;
+          loginBtn.textContent = 'Sign In';
+        });
+    });
+
+    document.getElementById('signOutBtn').addEventListener('click', function(){
+      signOut(auth);
+    });
+
+    var unsubscribeTickets = null;
+
+    onAuthStateChanged(auth, function(user){
+      authLoading.style.display = 'none';
+      if(user){
+        loginScreen.style.display = 'none';
+        dashboard.style.display = 'block';
+        whoBar.style.display = 'flex';
+        whoEmail.textContent = user.email;
+        startTicketsListener();
+      } else {
+        loginScreen.style.display = 'flex';
+        dashboard.style.display = 'none';
+        whoBar.style.display = 'none';
+        if(unsubscribeTickets){ unsubscribeTickets(); unsubscribeTickets = null; }
+        resetForm();
+      }
+    });
+
+    // ---------- Ticket form ----------
+    var ticketForm = document.getElementById('ticketForm');
+    var formTitle = document.getElementById('formTitle');
+    var formError = document.getElementById('formError');
+    var saveBtn = document.getElementById('saveBtn');
+    var saveStatus = document.getElementById('saveStatus');
+    var cancelEditBtn = document.getElementById('cancelEditBtn');
+    var ticketIdInput = document.getElementById('ticketId');
+    var imageSelect = document.getElementById('image');
+    var editBanner = document.getElementById('editBanner');
+    var editBannerRoute = document.getElementById('editBannerRoute');
+
+    function resetForm(){
+      ticketForm.reset();
+      ticketIdInput.value = '';
+      document.getElementById('flightType').value = 'Direct Flight';
+      document.getElementById('baggage').value = '30kg Baggage';
+      document.getElementById('order').value = '0';
+      document.getElementById('active').checked = true;
+      formTitle.textContent = 'Add New Ticket';
+      cancelEditBtn.style.display = 'none';
+      editBanner.style.display = 'none';
+      showError(formError, '');
+    }
+
+    cancelEditBtn.addEventListener('click', resetForm);
+
+    function readForm(){
+      var imageOpt = imageSelect.options[imageSelect.selectedIndex];
+      return {
+        routeFrom: document.getElementById('routeFrom').value.trim(),
+        routeTo: document.getElementById('routeTo').value.trim(),
+        airline: document.getElementById('airline').value.trim(),
+        airlineColor: document.getElementById('airlineColor').value,
+        flightDate: document.getElementById('flightDate').value,
+        flightType: document.getElementById('flightType').value.trim(),
+        baggage: document.getElementById('baggage').value.trim(),
+        priceInr: Number(document.getElementById('priceInr').value),
+        priceKwd: Number(document.getElementById('priceKwd').value),
+        ribbonType: document.getElementById('ribbonType').value,
+        image: imageOpt.value,
+        imageAlt: imageOpt.getAttribute('data-alt'),
+        enquireColor: document.getElementById('enquireColor').value,
+        order: Number(document.getElementById('order').value) || 0,
+        active: document.getElementById('active').checked
+      };
+    }
+
+    function fillForm(t, id){
+      ticketIdInput.value = id;
+      document.getElementById('routeFrom').value = t.routeFrom || '';
+      document.getElementById('routeTo').value = t.routeTo || '';
+      document.getElementById('airline').value = t.airline || '';
+      document.getElementById('airlineColor').value = t.airlineColor || 'red';
+      document.getElementById('flightDate').value = t.flightDate || '';
+      document.getElementById('flightType').value = t.flightType || 'Direct Flight';
+      document.getElementById('baggage').value = t.baggage || '30kg Baggage';
+      document.getElementById('priceInr').value = t.priceInr != null ? t.priceInr : '';
+      document.getElementById('priceKwd').value = t.priceKwd != null ? t.priceKwd : '';
+      document.getElementById('ribbonType').value = t.ribbonType || 'none';
+      document.getElementById('image').value = t.image || 'plane.png';
+      document.getElementById('enquireColor').value = t.enquireColor || 'navy';
+      document.getElementById('order').value = t.order != null ? t.order : 0;
+      document.getElementById('active').checked = t.active !== false;
+      formTitle.textContent = 'Edit Ticket';
+      cancelEditBtn.style.display = 'inline-block';
+      editBannerRoute.textContent = (t.routeFrom || '') + ' → ' + (t.routeTo || '');
+      editBanner.style.display = 'block';
+    }
+
+    var ticketsCache = {};
+
+    ticketForm.addEventListener('submit', function(e){
+      e.preventDefault();
+      showError(formError, '');
+      saveBtn.disabled = true;
+      saveBtn.textContent = 'Saving…';
+      var data = readForm();
+      var id = ticketIdInput.value;
+      var task;
+      if(id){
+        task = updateDoc(doc(db, 'tickets', id), Object.assign({}, data, { updatedAt: serverTimestamp() }));
+      } else {
+        task = addDoc(collection(db, 'tickets'), Object.assign({}, data, { createdAt: serverTimestamp(), updatedAt: serverTimestamp() }));
+      }
+      task.then(function(){
+        saveStatus.style.display = 'inline';
+        setTimeout(function(){ saveStatus.style.display = 'none'; }, 2000);
+        resetForm();
+      }).catch(function(err){
+        showError(formError, 'Could not save ticket: ' + err.message);
+      }).finally(function(){
+        saveBtn.disabled = false;
+        saveBtn.textContent = 'Save Ticket';
+      });
+    });
+
+    // ---------- Ticket list ----------
+    var ticketsBody = document.getElementById('ticketsBody');
+    var RIBBON_LABEL = { best: 'BEST PRICE', groupA: 'GROUP FARE', groupB: 'GROUP FARE', none: 'No badge' };
+
+    function formatDate(iso){
+      if(!iso) return '';
+      var parts = iso.split('-');
+      var months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+      return parseInt(parts[2],10) + ' ' + months[parseInt(parts[1],10)-1] + ' ' + parts[0];
+    }
+
+    function renderTickets(){
+      var ids = Object.keys(ticketsCache).sort(function(a,b){
+        return (ticketsCache[a].order||0) - (ticketsCache[b].order||0);
+      });
+      if(ids.length === 0){
+        ticketsBody.innerHTML = '<tr class="empty-row"><td colspan="7">No tickets yet — add one above.</td></tr>';
+        return;
+      }
+      ticketsBody.innerHTML = ids.map(function(id){
+        var t = ticketsCache[id];
+        return '<tr>' +
+          '<td>' + (t.order != null ? t.order : '') + '</td>' +
+          '<td>' + escapeHtml(t.routeFrom) + ' → ' + escapeHtml(t.routeTo) + '<br><span style="color:var(--muted);font-size:11.5px;">' + formatDate(t.flightDate) + ' · ' + escapeHtml(t.flightType || '') + '</span></td>' +
+          '<td>' + escapeHtml(t.airline) + '</td>' +
+          '<td>₹' + Number(t.priceInr||0).toLocaleString('en-IN') + '<br><span style="color:var(--muted);font-size:11.5px;">' + t.priceKwd + ' KWD</span></td>' +
+          '<td><span class="pill ' + t.ribbonType + '">' + RIBBON_LABEL[t.ribbonType] + '</span></td>' +
+          '<td><span class="status-dot ' + (t.active !== false ? 'on' : 'off') + '"></span>' + (t.active !== false ? 'Visible' : 'Hidden') + '</td>' +
+          '<td><div class="row-actions">' +
+            '<button class="btn btn-outline btn-small" data-edit="' + id + '">Edit</button>' +
+            '<button class="btn btn-danger btn-small" data-delete="' + id + '">Delete</button>' +
+          '</div></td>' +
+        '</tr>';
+      }).join('');
+
+      ticketsBody.querySelectorAll('[data-edit]').forEach(function(btn){
+        btn.addEventListener('click', function(){
+          var id = btn.getAttribute('data-edit');
+          fillForm(ticketsCache[id], id);
+          window.scrollTo({ top: 0, behavior: 'smooth' });
+        });
+      });
+      ticketsBody.querySelectorAll('[data-delete]').forEach(function(btn){
+        btn.addEventListener('click', function(){
+          var id = btn.getAttribute('data-delete');
+          var t = ticketsCache[id];
+          if(confirm('Delete the ' + t.routeFrom + ' → ' + t.routeTo + ' ticket? This cannot be undone.')){
+            deleteDoc(doc(db, 'tickets', id)).catch(function(err){ alert('Could not delete: ' + err.message); });
+          }
+        });
+      });
+    }
+
+    function escapeHtml(s){
+      return String(s == null ? '' : s).replace(/[&<>"']/g, function(c){
+        return { '&':'&amp;', '<':'&lt;', '>':'&gt;', '"':'&quot;', "'":'&#39;' }[c];
+      });
+    }
+
+    function startTicketsListener(){
+      if(unsubscribeTickets) return;
+      var q = query(collection(db, 'tickets'), orderBy('order', 'asc'));
+      unsubscribeTickets = onSnapshot(q, function(snapshot){
+        ticketsCache = {};
+        snapshot.forEach(function(docSnap){
+          ticketsCache[docSnap.id] = docSnap.data();
+        });
+        renderTickets();
+      }, function(err){
+        ticketsBody.innerHTML = '<tr class="empty-row"><td colspan="7">Could not load tickets: ' + escapeHtml(err.message) + '</td></tr>';
+      });
+    }
+  </script>
+</body>
+</html>
