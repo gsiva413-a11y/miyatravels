@@ -288,20 +288,37 @@
   .section-head .link svg{width:13px;height:13px; stroke:var(--purple); fill:none;}
 
   /* ---------- Fare cards ---------- */
-  .fare-scroll{display:grid; grid-template-columns:repeat(auto-fit,minmax(240px,1fr)); gap:18px;}
+  .fare-carousel{position:relative;}
+  .fare-nav{
+    position:absolute; top:calc(50% - 8px); transform:translateY(-50%); z-index:5;
+    width:38px; height:38px; border-radius:50%; border:1px solid var(--line); background:var(--white);
+    display:flex; align-items:center; justify-content:center; cursor:pointer;
+    font-size:22px; line-height:1; font-weight:800; color:var(--purple);
+    box-shadow:0 6px 16px rgba(20,20,60,0.16);
+  }
+  .fare-nav:hover{background:var(--lav-bg);}
+  .fare-nav.prev{left:-8px;}
+  .fare-nav.next{right:-8px;}
+  .fare-scroll{
+    display:flex; gap:18px; overflow-x:auto; scroll-snap-type:x proximity;
+    -webkit-overflow-scrolling:touch; padding:0 30px 8px; scrollbar-width:none;
+  }
+  .fare-scroll::-webkit-scrollbar{display:none;}
   .fare-skeleton{
     background:linear-gradient(90deg, var(--lav-bg) 25%, #f5f4fc 37%, var(--lav-bg) 63%);
     background-size:400% 100%; animation:fareShimmer 1.4s ease infinite;
     border-radius:16px; min-height:220px; border:1px solid var(--line);
+    flex:0 0 260px; scroll-snap-align:start;
   }
   @keyframes fareShimmer{0%{background-position:100% 50%;} 100%{background-position:0 50%;}}
   .fare-empty{
-    grid-column:1/-1; text-align:center; padding:44px 20px; color:var(--muted);
+    flex:1 1 100%; text-align:center; padding:44px 20px; color:var(--muted);
     border:1px dashed var(--line); border-radius:16px;
   }
   .fare-empty p{font-size:13.5px; font-weight:600; margin-bottom:16px;}
   .fare-empty .btn-primary{display:inline-flex;}
   .fare-card{
+    flex:0 0 260px; scroll-snap-align:start;
     background:var(--white); border:1px solid var(--line); border-radius:16px;
     box-shadow:0 4px 14px rgba(20,20,60,0.08); transition:transform .2s ease, box-shadow .2s ease;
     position:relative; padding:16px 16px 18px;
@@ -436,6 +453,7 @@
   @media (min-width:641px){
     .taxi-panel{padding:32px;}
     .trust-bar{grid-template-columns:repeat(5,1fr);}
+    .fare-card, .fare-skeleton{flex-basis:280px;}
   }
 
   @media (min-width:768px){
@@ -459,11 +477,19 @@
     .hero-visual{flex:0 0 420px; margin-top:0;}
     .hero-copy .headline{font-size:46px;}
     .hero-copy .desc{font-size:15.5px;}
-    .fare-scroll{grid-template-columns:repeat(3,1fr);}
+    .fare-card, .fare-skeleton{flex-basis:300px;}
   }
 
   @media (max-width:1024px){
     .footer-top{grid-template-columns:1fr 1fr;}
+    .hero::before{
+      background-image:url('images/mobileplane.png');
+      background-size:cover;
+      background-position:32% 35%;
+    }
+    .hero::after{
+      background:linear-gradient(180deg, rgba(10,10,20,0.72) 0%, rgba(10,10,30,0.5) 30%, rgba(10,10,30,0.22) 58%, rgba(10,10,30,0.15) 100%);
+    }
   }
   /* Telugu script renders visually larger than Latin at the same font-size — trim it down */
   html[lang="te"] .i18n{font-size:calc(1em - 1.5px);}
@@ -477,6 +503,18 @@
     .meta-row{grid-template-columns:1fr;}
     .meta-field{border-right:none; border-bottom:1px solid var(--line);}
     .meta-field:last-child{border-bottom:none;}
+    .header-inner{gap:10px;}
+    .lang-toggle span{padding:7px 11px; font-size:10.5px;}
+    .trust-bar{grid-template-columns:repeat(2,1fr);}
+    .trust-item:last-child{grid-column:1/-1;}
+  }
+
+  @media (max-width:400px){
+    .header-inner{padding:10px 14px; gap:8px;}
+    .brand-text{display:none;}
+    .lang-toggle span{padding:6px 9px; font-size:10px;}
+    .call-btn{width:34px; height:34px;}
+    .call-btn svg{width:15px; height:15px;}
   }
 </style>
 </head>
@@ -546,10 +584,10 @@
           <div class="item"><svg viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2l8 4v6c0 5-3.4 8.4-8 10-4.6-1.6-8-5-8-10V6l8-4z"/></svg><span class="i18n" data-en="Safe & Reliable" data-te="సురక్షితం & నమ్మదగినది">Safe &amp; Reliable</span></div>
         </div>
         <div class="hero-actions">
-          <button type="button" class="btn btn-primary" id="heroWhatsappBtn">
+          <!-- <button type="button" class="btn btn-primary" id="heroWhatsappBtn">
             <svg viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
             <span class="i18n" data-en="Get Fare on WhatsApp" data-te="వాట్సాప్‌లో ఫేర్ పొందండి">Get Fare on WhatsApp</span>
-          </button>
+          </button> -->
           <a href="#fares" class="btn btn-ghost">
             <svg viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2c2 4-2 5-2 9a4 4 0 0 0 8 0c0-2-1-3-1-3s2 1 2 5a7 7 0 0 1-14 0c0-6 5-7 7-11z"/></svg>
             <span class="i18n" data-en="View Group Fares" data-te="గ్రూప్ ఫేర్‌లు చూడండి">View Group Fares</span>
@@ -569,7 +607,7 @@
   </section>
 
   <!-- Flight enquiry -->
-  <div class="enquiry-wrap">
+  <div class="enquiry-wrap" id="enquiry">
     <div class="enquiry-card">
       <div class="enquiry-head">
         <div class="left">
@@ -654,16 +692,20 @@
           <div class="left">
             <svg viewBox="0 0 24 24" stroke-width="2"><path d="M12 2c2 4-2 5-2 9a4 4 0 0 0 8 0c0-2-1-3-1-3s2 1 2 5a7 7 0 0 1-14 0c0-6 5-7 7-11z"/></svg>
             <h2><span class="i18n" data-en="TODAY'S GROUP FARES" data-te="ఈరోజు గ్రూప్ ఫేర్‌లు">TODAY'S GROUP FARES</span></h2>
-            <span class="iata-badge"><img src="images/iata.png" alt="IATA Accredited"></span>
+            <span class="iata-badge"><img src="images/iata.png" alt="IATA Accredited" loading="lazy"></span>
           </div>
         </div>
         <a class="link js-wa" data-wa-msg="Hi Miya Travels, please share the full list of today's group fares."><span class="i18n" data-en="View All Fares" data-te="అన్ని ఫేర్‌లు చూడండి">View All Fares</span> <svg viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18l6-6-6-6"/></svg></a>
       </div>
 
-      <div class="fare-scroll" id="fareScroll">
-        <div class="fare-skeleton"></div>
-        <div class="fare-skeleton"></div>
-        <div class="fare-skeleton"></div>
+      <div class="fare-carousel">
+        <button type="button" class="fare-nav prev" id="farePrev" aria-label="Scroll fares left">&lsaquo;</button>
+        <div class="fare-scroll" id="fareScroll">
+          <div class="fare-skeleton"></div>
+          <div class="fare-skeleton"></div>
+          <div class="fare-skeleton"></div>
+        </div>
+        <button type="button" class="fare-nav next" id="fareNext" aria-label="Scroll fares right">&rsaquo;</button>
       </div>
     </div>
   </div>
@@ -684,7 +726,7 @@
         </div>
         <div class="taxi-grid">
           <div class="taxi-item pickup">
-            <div class="taxi-img-wrap"><img class="ill" src="images/pickup.png" alt="Airport Pickup"></div>
+            <div class="taxi-img-wrap"><img class="ill" src="images/pickup.png" alt="Airport Pickup" loading="lazy"></div>
             <div class="taxi-text">
               <div>
                 <div class="t1"><span class="i18n" data-en="Airport → Home" data-te="ఎయిర్‌పోర్ట్ → ఇల్లు">Airport → Home</span></div>
@@ -694,7 +736,7 @@
             </div>
           </div>
           <div class="taxi-item drop">
-            <div class="taxi-img-wrap"><img class="ill" src="images/drop.png" alt="Airport Drop"></div>
+            <div class="taxi-img-wrap"><img class="ill" src="images/drop.png" alt="Airport Drop" loading="lazy"></div>
             <div class="taxi-text">
               <div>
                 <div class="t1"><span class="i18n" data-en="Home → Airport" data-te="ఇల్లు → ఎయిర్‌పోర్ట్">Home → Airport</span></div>
@@ -704,7 +746,7 @@
             </div>
           </div>
           <div class="taxi-item local">
-            <div class="taxi-img-wrap"><img class="ill" src="images/taxi.png" alt="Local Taxi in Kuwait"></div>
+            <div class="taxi-img-wrap"><img class="ill" src="images/taxi.png" alt="Local Taxi in Kuwait" loading="lazy"></div>
             <div class="taxi-text">
               <div>
                 <div class="t1"><span class="i18n" data-en="Local Taxi" data-te="లోకల్ టాక్సీ">Local Taxi</span></div>
@@ -735,7 +777,7 @@
             <p><span class="i18n" data-en="Quick & Easy Medical Booking" data-te="త్వరిత & సులభమైన మెడికల్ బుకింగ్">Quick &amp; Easy Medical Booking</span></p>
             <a class="service-btn blue js-wa" data-wa-msg="Hi Miya Travels, I would like to book a GAMCA medical appointment. Please assist."><span class="i18n" data-en="Book Appointment" data-te="అపాయింట్‌మెంట్ బుక్ చేయండి">Book Appointment</span> <svg viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg></a>
           </div>
-          <img class="service-photo" src="images/Gamca.png" alt="GAMCA Medical Appointment">
+          <img class="service-photo" src="images/Gamca.png" alt="GAMCA Medical Appointment" loading="lazy">
         </div>
         <div class="service-card visa">
           <div class="service-info">
@@ -744,7 +786,7 @@
             <p><span class="i18n" data-en="Visa Stamping, Assistance & All Visa Related Services" data-te="వీసా స్టాంపింగ్, సహాయం & అన్ని వీసా సంబంధిత సేవలు">Visa Stamping, Assistance &amp; All Visa Related Services</span></p>
             <a class="service-btn green js-wa" data-wa-msg="Hi Miya Travels, I would like to enquire about visa services. Please assist."><span class="i18n" data-en="Enquire Now" data-te="ఇప్పుడు విచారించండి">Enquire Now</span> <svg viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg></a>
           </div>
-          <img class="service-photo" src="images/passport.png" alt="Visa Services">
+          <img class="service-photo" src="images/passport.png" alt="Visa Services" loading="lazy">
         </div>
       </div>
     </div>
@@ -787,7 +829,7 @@
       <div class="footer-top">
         <div class="footer-brand">
           <div class="brand">
-            <span class="footer-logo-chip"><img src="images/logo.png" alt="Miya Travels" class="brand-logo-img footer-logo-img"></span>
+            <span class="footer-logo-chip"><img src="images/logo.png" alt="Miya Travels" class="brand-logo-img footer-logo-img" loading="lazy"></span>
             <div class="brand-text">
               <div class="sub" style="color:#8891bb;"><span class="i18n" data-en="FLY • EXPLORE • ARRIVE" data-te="ప్రయాణం • అన్వేషణ • చేరుకోండి">FLY • EXPLORE • ARRIVE</span></div>
             </div>
@@ -891,10 +933,90 @@
       el.setAttribute('rel', 'noopener');
     });
 
+    // On mobile, land straight on the Flight Enquiry card, then let the user scroll freely.
+    if(window.matchMedia('(max-width: 1024px)').matches){
+      window.addEventListener('load', function(){
+        setTimeout(function(){
+          var target = document.getElementById('enquiry');
+          if(!target) return;
+          var header = document.querySelector('header');
+          var headerHeight = header ? header.offsetHeight : 0;
+          var top = target.getBoundingClientRect().top + window.pageYOffset - headerHeight - 8;
+          window.scrollTo({ top: top, behavior: 'smooth' });
+        }, 300);
+      });
+    }
+
+    // Set to true to re-enable the automatic left-to-right scroll of the fare cards.
+    var FARE_AUTO_SCROLL_ENABLED = false;
+
+    (function fareNavButtons(){
+      var track = document.getElementById('fareScroll');
+      var prevBtn = document.getElementById('farePrev');
+      var nextBtn = document.getElementById('fareNext');
+      if(!track || !prevBtn || !nextBtn) return;
+
+      function scrollByCard(direction){
+        var card = track.querySelector('.fare-card, .fare-skeleton');
+        var amount = card ? (card.getBoundingClientRect().width + 18) : 260;
+        track.scrollBy({ left: direction * amount, behavior: 'smooth' });
+      }
+      prevBtn.addEventListener('click', function(){ scrollByCard(-1); });
+      nextBtn.addEventListener('click', function(){ scrollByCard(1); });
+    })();
+
+    (function autoScrollFares(){
+      if(!FARE_AUTO_SCROLL_ENABLED) return;
+      var track = document.getElementById('fareScroll');
+      if(!track) return;
+      if(window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+
+      var autoScroll = true;
+      var resumeTimer = null;
+
+      function pauseAuto(){
+        autoScroll = false;
+        clearTimeout(resumeTimer);
+        resumeTimer = setTimeout(function(){ autoScroll = true; }, 3000);
+      }
+
+      ['pointerdown', 'wheel', 'touchstart'].forEach(function(evt){
+        track.addEventListener(evt, pauseAuto, { passive: true });
+      });
+
+      function tick(){
+        if(autoScroll && track.scrollWidth > track.clientWidth){
+          if(track.scrollLeft + track.clientWidth >= track.scrollWidth - 1){
+            track.scrollLeft = 0;
+          } else {
+            track.scrollLeft += 0.6;
+          }
+        }
+        requestAnimationFrame(tick);
+      }
+      requestAnimationFrame(tick);
+    })();
+
     var tripTabs = document.getElementById('tripTabs');
+    var departDate = document.getElementById('departDate');
     var returnDate = document.getElementById('returnDate');
     var returnArrow = document.getElementById('returnArrow');
     var currentTrip = 'oneway';
+
+    (function restrictPastDates(){
+      var now = new Date();
+      var todayStr = now.getFullYear() + '-' + String(now.getMonth() + 1).padStart(2, '0') + '-' + String(now.getDate()).padStart(2, '0');
+      departDate.setAttribute('min', todayStr);
+      returnDate.setAttribute('min', todayStr);
+      if(departDate.value && departDate.value < todayStr) departDate.value = todayStr;
+      if(returnDate.value && returnDate.value < todayStr) returnDate.value = todayStr;
+      departDate.addEventListener('change', function(){
+        returnDate.setAttribute('min', departDate.value || todayStr);
+        if(returnDate.value && departDate.value && returnDate.value < departDate.value){
+          returnDate.value = departDate.value;
+        }
+      });
+    })();
 
     function selectTrip(type, btn){
       currentTrip = type;
@@ -1110,7 +1232,7 @@
               '<div class="row"><svg viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 7h-3V5a2 2 0 0 0-2-2H9a2 2 0 0 0-2 2v2H4a1 1 0 0 0-1 1v11a1 1 0 0 0 1 1h16a1 1 0 0 0 1-1V8a1 1 0 0 0-1-1zM9 5h6v2H9z"/></svg><span>' + escapeHtml(t.baggage || '') + '</span></div>' +
             '</div>' +
           '</div>' +
-          '<img class="fare-illustration" src="images/' + escapeHtml(t.image || 'plane.png') + '" alt="' + escapeHtml(t.imageAlt || '') + '">' +
+          '<img class="fare-illustration" src="images/' + escapeHtml(t.image || 'plane.png') + '" alt="' + escapeHtml(t.imageAlt || '') + '" loading="lazy">' +
         '</div>' +
         '<div class="fare-price-row">' +
           '<div class="fare-price"><div class="inr">₹' + priceInr.toLocaleString('en-IN') + '</div><div class="kwd">' + t.priceKwd + ' KWD</div></div>' +

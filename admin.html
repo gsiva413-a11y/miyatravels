@@ -108,6 +108,46 @@
   .status-dot.off{background:var(--muted);}
   .row-actions{display:flex; gap:6px;}
   .empty-row td{text-align:center; color:var(--muted); padding:28px;}
+
+  /* ---------- Responsive ---------- */
+  @media (max-width:900px){
+    .form-grid{grid-template-columns:repeat(2,1fr);}
+  }
+  @media (max-width:640px){
+    .topbar{padding:12px 16px;}
+    .topbar .brand{font-size:14px;}
+    .topbar .who{width:100%; justify-content:space-between;}
+    .wrap{padding:18px 14px 44px;}
+    .panel{padding:18px 16px; border-radius:12px;}
+    .panel h2{font-size:15px;}
+    .form-grid{grid-template-columns:1fr; gap:12px;}
+    .form-actions{flex-direction:column; align-items:stretch;}
+    .form-actions .btn{width:100%;}
+    .save-status{align-self:center; text-align:center;}
+    .login-card{padding:28px 22px;}
+
+    table, thead, tbody, tr{display:block; width:100%;}
+    thead{display:none;}
+    tbody tr{
+      border:1px solid var(--line); border-radius:12px; padding:10px 12px; margin-bottom:12px;
+    }
+    tbody tr:hover{background:transparent;}
+    td{
+      display:flex; align-items:center; justify-content:space-between; gap:12px;
+      padding:7px 0; border-bottom:1px solid var(--line); text-align:right;
+    }
+    td:last-child{border-bottom:none;}
+    td::before{
+      content:attr(data-label); font-size:11px; font-weight:800; text-transform:uppercase;
+      letter-spacing:0.3px; color:var(--muted); text-align:left; flex-shrink:0;
+    }
+    td[data-label="Route"], td[data-label="Actions"]{flex-direction:column; align-items:flex-start; text-align:left;}
+    .row-actions{width:100%; margin-top:4px;}
+    .row-actions .btn{flex:1;}
+    .empty-row{border:none !important;}
+    .empty-row td{display:block; text-align:center;}
+    .empty-row td::before{content:none;}
+  }
 </style>
 </head>
 <body>
@@ -165,7 +205,23 @@
             </div>
             <div class="field">
               <label for="airline">Airline</label>
-              <input type="text" id="airline" placeholder="AIR INDIA express" required>
+              <select id="airline" required>
+                <option value="">Select airline…</option>
+                <option value="IndiGo">IndiGo</option>
+                <option value="Air India Express">Air India Express</option>
+                <option value="Jazeera Airways">Jazeera Airways</option>
+                <option value="Kuwait Airways">Kuwait Airways</option>
+                <option value="Gulf Air">Gulf Air</option>
+                <option value="Air Arabia">Air Arabia</option>
+                <option value="SriLankan Airlines">SriLankan Airlines</option>
+                <option value="SalamAir">SalamAir</option>
+                <option value="__other__">Other (type manually)</option>
+              </select>
+            </div>
+
+            <div class="field span-3" id="airlineOtherField" style="display:none;">
+              <label for="airlineOther">Airline Name</label>
+              <input type="text" id="airlineOther" placeholder="Enter airline name">
             </div>
 
             <div class="field">
@@ -210,10 +266,22 @@
             <div class="field">
               <label for="image">Illustration</label>
               <select id="image">
-                <option value="charminor.png" data-alt="Charminar, Hyderabad">Charminar (Hyderabad)</option>
-                <option value="chennai.png" data-alt="Lighthouse, Chennai">Lighthouse (Chennai)</option>
-                <option value="bangolore.png" data-alt="Vidhana Soudha, Bangalore">Vidhana Soudha (Bangalore)</option>
-                <option value="plane.png" data-alt="Flight">Generic Plane</option>
+                <optgroup label="Airline">
+                  <option value="indigo.png" data-alt="IndiGo aircraft">IndiGo</option>
+                  <option value="airindia.png" data-alt="Air India Express aircraft">Air India Express</option>
+                  <option value="jazeera.png" data-alt="Jazeera Airways aircraft">Jazeera Airways</option>
+                  <option value="kuwait.png" data-alt="Kuwait Airways aircraft">Kuwait Airways</option>
+                  <option value="gulfair.png" data-alt="Gulf Air aircraft">Gulf Air</option>
+                  <option value="airarabia.png" data-alt="Air Arabia aircraft">Air Arabia</option>
+                  <option value="srilanka.png" data-alt="SriLankan Airlines aircraft">SriLankan Airlines</option>
+                  <option value="salamair.png" data-alt="SalamAir aircraft">SalamAir</option>
+                </optgroup>
+                <optgroup label="City">
+                  <option value="charminor.png" data-alt="Charminar, Hyderabad">Charminar (Hyderabad)</option>
+                  <option value="chennai.png" data-alt="Lighthouse, Chennai">Lighthouse (Chennai)</option>
+                  <option value="bangolore.png" data-alt="Vidhana Soudha, Bangalore">Vidhana Soudha (Bangalore)</option>
+                  <option value="plane.png" data-alt="Flight">Generic Plane</option>
+                </optgroup>
               </select>
             </div>
             <div class="field">
@@ -342,8 +410,32 @@
     var cancelEditBtn = document.getElementById('cancelEditBtn');
     var ticketIdInput = document.getElementById('ticketId');
     var imageSelect = document.getElementById('image');
+    var airlineSelect = document.getElementById('airline');
+    var airlineOtherField = document.getElementById('airlineOtherField');
+    var airlineOtherInput = document.getElementById('airlineOther');
     var editBanner = document.getElementById('editBanner');
     var editBannerRoute = document.getElementById('editBannerRoute');
+
+    var AIRLINE_IMAGE_MAP = {
+      'IndiGo': 'indigo.png',
+      'Air India Express': 'airindia.png',
+      'Jazeera Airways': 'jazeera.png',
+      'Kuwait Airways': 'kuwait.png',
+      'Gulf Air': 'gulfair.png',
+      'Air Arabia': 'airarabia.png',
+      'SriLankan Airlines': 'srilanka.png',
+      'SalamAir': 'salamair.png'
+    };
+
+    airlineSelect.addEventListener('change', function(){
+      var isOther = airlineSelect.value === '__other__';
+      airlineOtherField.style.display = isOther ? 'block' : 'none';
+      if(isOther){
+        airlineOtherInput.focus();
+      } else if(AIRLINE_IMAGE_MAP[airlineSelect.value]){
+        imageSelect.value = AIRLINE_IMAGE_MAP[airlineSelect.value];
+      }
+    });
 
     function resetForm(){
       ticketForm.reset();
@@ -352,6 +444,7 @@
       document.getElementById('baggage').value = '30kg Baggage';
       document.getElementById('order').value = '0';
       document.getElementById('active').checked = true;
+      airlineOtherField.style.display = 'none';
       formTitle.textContent = 'Add New Ticket';
       cancelEditBtn.style.display = 'none';
       editBanner.style.display = 'none';
@@ -362,10 +455,11 @@
 
     function readForm(){
       var imageOpt = imageSelect.options[imageSelect.selectedIndex];
+      var airline = airlineSelect.value === '__other__' ? airlineOtherInput.value.trim() : airlineSelect.value;
       return {
         routeFrom: document.getElementById('routeFrom').value.trim(),
         routeTo: document.getElementById('routeTo').value.trim(),
-        airline: document.getElementById('airline').value.trim(),
+        airline: airline,
         airlineColor: document.getElementById('airlineColor').value,
         flightDate: document.getElementById('flightDate').value,
         flightType: document.getElementById('flightType').value.trim(),
@@ -385,7 +479,16 @@
       ticketIdInput.value = id;
       document.getElementById('routeFrom').value = t.routeFrom || '';
       document.getElementById('routeTo').value = t.routeTo || '';
-      document.getElementById('airline').value = t.airline || '';
+      var knownAirline = Object.prototype.hasOwnProperty.call(AIRLINE_IMAGE_MAP, t.airline || '');
+      if(knownAirline){
+        airlineSelect.value = t.airline;
+        airlineOtherField.style.display = 'none';
+        airlineOtherInput.value = '';
+      } else {
+        airlineSelect.value = '__other__';
+        airlineOtherField.style.display = 'block';
+        airlineOtherInput.value = t.airline || '';
+      }
       document.getElementById('airlineColor').value = t.airlineColor || 'red';
       document.getElementById('flightDate').value = t.flightDate || '';
       document.getElementById('flightType').value = t.flightType || 'Direct Flight';
@@ -452,13 +555,13 @@
       ticketsBody.innerHTML = ids.map(function(id){
         var t = ticketsCache[id];
         return '<tr>' +
-          '<td>' + (t.order != null ? t.order : '') + '</td>' +
-          '<td>' + escapeHtml(t.routeFrom) + ' → ' + escapeHtml(t.routeTo) + '<br><span style="color:var(--muted);font-size:11.5px;">' + formatDate(t.flightDate) + ' · ' + escapeHtml(t.flightType || '') + '</span></td>' +
-          '<td>' + escapeHtml(t.airline) + '</td>' +
-          '<td>₹' + Number(t.priceInr||0).toLocaleString('en-IN') + '<br><span style="color:var(--muted);font-size:11.5px;">' + t.priceKwd + ' KWD</span></td>' +
-          '<td><span class="pill ' + t.ribbonType + '">' + RIBBON_LABEL[t.ribbonType] + '</span></td>' +
-          '<td><span class="status-dot ' + (t.active !== false ? 'on' : 'off') + '"></span>' + (t.active !== false ? 'Visible' : 'Hidden') + '</td>' +
-          '<td><div class="row-actions">' +
+          '<td data-label="Order">' + (t.order != null ? t.order : '') + '</td>' +
+          '<td data-label="Route">' + escapeHtml(t.routeFrom) + ' → ' + escapeHtml(t.routeTo) + '<br><span style="color:var(--muted);font-size:11.5px;">' + formatDate(t.flightDate) + ' · ' + escapeHtml(t.flightType || '') + '</span></td>' +
+          '<td data-label="Airline">' + escapeHtml(t.airline) + '</td>' +
+          '<td data-label="Price">₹' + Number(t.priceInr||0).toLocaleString('en-IN') + '<br><span style="color:var(--muted);font-size:11.5px;">' + t.priceKwd + ' KWD</span></td>' +
+          '<td data-label="Badge"><span class="pill ' + t.ribbonType + '">' + RIBBON_LABEL[t.ribbonType] + '</span></td>' +
+          '<td data-label="Status"><span class="status-dot ' + (t.active !== false ? 'on' : 'off') + '"></span>' + (t.active !== false ? 'Visible' : 'Hidden') + '</td>' +
+          '<td data-label="Actions"><div class="row-actions">' +
             '<button class="btn btn-outline btn-small" data-edit="' + id + '">Edit</button>' +
             '<button class="btn btn-danger btn-small" data-delete="' + id + '">Delete</button>' +
           '</div></td>' +
