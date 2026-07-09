@@ -69,6 +69,26 @@
   }
   .field input:focus, .field select:focus, .field textarea:focus{outline:2px solid var(--purple); outline-offset:1px;}
   .field-row{display:grid; grid-template-columns:1fr 1fr; gap:12px;}
+  .date-option-row{
+    border:1px solid var(--line); border-radius:10px; padding:12px; margin-bottom:10px; background:#fbfbfe;
+  }
+  .date-option-row .do-line{
+    display:grid; grid-template-columns:repeat(3,1fr); gap:8px; margin-bottom:8px;
+  }
+  .date-option-row .do-line:last-of-type{margin-bottom:10px;}
+  .date-option-row label{
+    display:flex; flex-direction:column; gap:4px; font-size:10.5px; font-weight:700;
+    color:var(--muted); text-transform:uppercase; letter-spacing:0.3px;
+  }
+  .date-option-row input{
+    padding:9px 10px; border:1px solid var(--line); border-radius:8px; font-size:13px;
+    font-family:inherit; color:var(--ink); font-weight:400; text-transform:none; letter-spacing:normal;
+  }
+  .date-option-row input:focus{outline:2px solid var(--purple); outline-offset:1px;}
+  .date-option-row .do-remove{width:100%;}
+  @media (max-width:640px){
+    .date-option-row .do-line{grid-template-columns:1fr 1fr;}
+  }
   .checkbox-row{display:flex; align-items:center; gap:8px; margin-bottom:16px;}
   .checkbox-row input{width:auto;}
   .error-msg{
@@ -233,25 +253,15 @@
               </select>
             </div>
             <div class="field">
-              <label for="flightDate">Flight Date</label>
-              <input type="date" id="flightDate" required>
-            </div>
-            <div class="field">
               <label for="flightType">Flight Type</label>
               <input type="text" id="flightType" placeholder="Direct Flight" value="Direct Flight" required>
             </div>
+            <div></div>
 
-            <div class="field">
-              <label for="baggage">Baggage</label>
-              <input type="text" id="baggage" placeholder="30kg Baggage" value="30kg Baggage" required>
-            </div>
-            <div class="field">
-              <label for="priceInr">Price (INR)</label>
-              <input type="number" id="priceInr" min="0" step="1" placeholder="18000" required>
-            </div>
-            <div class="field">
-              <label for="priceKwd">Price (KWD)</label>
-              <input type="number" id="priceKwd" min="0" step="0.01" placeholder="69" required>
+            <div class="field span-3">
+              <label>Dates, Baggage &amp; Price</label>
+              <div id="dateOptionsList"></div>
+              <button type="button" class="btn btn-outline btn-small" id="addDateOptionBtn" style="margin-top:6px;">+ Add another date</button>
             </div>
 
             <div class="field">
@@ -437,14 +447,84 @@
       }
     });
 
+    // ---------- Date / baggage / price options (repeatable rows) ----------
+    var dateOptionsList = document.getElementById('dateOptionsList');
+    var addDateOptionBtn = document.getElementById('addDateOptionBtn');
+
+    function makeDateOptionRow(data){
+      data = data || {};
+      var row = document.createElement('div');
+      row.className = 'date-option-row';
+      row.innerHTML =
+        '<div class="do-line">' +
+          '<label>Date<input type="date" class="do-date" required></label>' +
+          '<label>Departure (24hr)<input type="time" class="do-dep"></label>' +
+          '<label>Arrival (24hr)<input type="time" class="do-arr"></label>' +
+        '</div>' +
+        '<div class="do-line">' +
+          '<label>Baggage<input type="text" class="do-baggage" placeholder="20kg+7kg Baggage" required></label>' +
+          '<label>Price INR<input type="number" class="do-price-inr" min="0" step="1" placeholder="18000" required></label>' +
+          '<label>Price KWD<input type="number" class="do-price-kwd" min="0" step="0.01" placeholder="69" required></label>' +
+        '</div>' +
+        '<button type="button" class="btn btn-danger btn-small do-remove" title="Remove this date">✕ Remove this date</button>';
+      row.querySelector('.do-date').value = data.flightDate || '';
+      row.querySelector('.do-dep').value = data.depTime || '';
+      row.querySelector('.do-arr').value = data.arrTime || '';
+      row.querySelector('.do-baggage').value = data.baggage || '30kg Baggage';
+      row.querySelector('.do-price-inr').value = data.priceInr != null ? data.priceInr : '';
+      row.querySelector('.do-price-kwd').value = data.priceKwd != null ? data.priceKwd : '';
+      row.querySelector('.do-remove').addEventListener('click', function(){
+        if(dateOptionsList.children.length > 1){ row.remove(); }
+      });
+      return row;
+    }
+
+    function addDateOptionRow(data){
+      dateOptionsList.appendChild(makeDateOptionRow(data));
+    }
+
+    function setDateOptionRows(list){
+      dateOptionsList.innerHTML = '';
+      if(list && list.length){
+        list.forEach(function(d){ addDateOptionRow(d); });
+      } else {
+        addDateOptionRow();
+      }
+    }
+
+    function readDateOptions(){
+      return Array.prototype.map.call(dateOptionsList.querySelectorAll('.date-option-row'), function(row){
+        return {
+          flightDate: row.querySelector('.do-date').value,
+          depTime: row.querySelector('.do-dep').value,
+          arrTime: row.querySelector('.do-arr').value,
+          baggage: row.querySelector('.do-baggage').value.trim(),
+          priceInr: Number(row.querySelector('.do-price-inr').value),
+          priceKwd: Number(row.querySelector('.do-price-kwd').value)
+        };
+      });
+    }
+
+    // Tickets saved before this feature stored a single flightDate/baggage/priceInr/priceKwd.
+    function getDateOptions(t){
+      if(t.dateOptions && t.dateOptions.length) return t.dateOptions;
+      if(t.flightDate || t.priceInr != null){
+        return [{ flightDate: t.flightDate, baggage: t.baggage, priceInr: t.priceInr, priceKwd: t.priceKwd }];
+      }
+      return [];
+    }
+
+    addDateOptionBtn.addEventListener('click', function(){ addDateOptionRow(); });
+    setDateOptionRows();
+
     function resetForm(){
       ticketForm.reset();
       ticketIdInput.value = '';
       document.getElementById('flightType').value = 'Direct Flight';
-      document.getElementById('baggage').value = '30kg Baggage';
       document.getElementById('order').value = '0';
       document.getElementById('active').checked = true;
       airlineOtherField.style.display = 'none';
+      setDateOptionRows();
       formTitle.textContent = 'Add New Ticket';
       cancelEditBtn.style.display = 'none';
       editBanner.style.display = 'none';
@@ -461,11 +541,8 @@
         routeTo: document.getElementById('routeTo').value.trim(),
         airline: airline,
         airlineColor: document.getElementById('airlineColor').value,
-        flightDate: document.getElementById('flightDate').value,
         flightType: document.getElementById('flightType').value.trim(),
-        baggage: document.getElementById('baggage').value.trim(),
-        priceInr: Number(document.getElementById('priceInr').value),
-        priceKwd: Number(document.getElementById('priceKwd').value),
+        dateOptions: readDateOptions(),
         ribbonType: document.getElementById('ribbonType').value,
         image: imageOpt.value,
         imageAlt: imageOpt.getAttribute('data-alt'),
@@ -490,11 +567,8 @@
         airlineOtherInput.value = t.airline || '';
       }
       document.getElementById('airlineColor').value = t.airlineColor || 'red';
-      document.getElementById('flightDate').value = t.flightDate || '';
       document.getElementById('flightType').value = t.flightType || 'Direct Flight';
-      document.getElementById('baggage').value = t.baggage || '30kg Baggage';
-      document.getElementById('priceInr').value = t.priceInr != null ? t.priceInr : '';
-      document.getElementById('priceKwd').value = t.priceKwd != null ? t.priceKwd : '';
+      setDateOptionRows(getDateOptions(t));
       document.getElementById('ribbonType').value = t.ribbonType || 'none';
       document.getElementById('image').value = t.image || 'plane.png';
       document.getElementById('enquireColor').value = t.enquireColor || 'navy';
@@ -554,11 +628,23 @@
       }
       ticketsBody.innerHTML = ids.map(function(id){
         var t = ticketsCache[id];
+        var opts = getDateOptions(t);
+        var datesLabel = opts.length === 0 ? '—' :
+          opts.length === 1 ? formatDate(opts[0].flightDate) :
+          opts.length + ' dates (' + formatDate(opts[0].flightDate) + '…)';
+        var inrVals = opts.map(function(o){ return Number(o.priceInr||0); });
+        var kwdVals = opts.map(function(o){ return Number(o.priceKwd||0); });
+        var minInr = inrVals.length ? Math.min.apply(null, inrVals) : 0;
+        var maxInr = inrVals.length ? Math.max.apply(null, inrVals) : 0;
+        var minKwd = kwdVals.length ? Math.min.apply(null, kwdVals) : 0;
+        var maxKwd = kwdVals.length ? Math.max.apply(null, kwdVals) : 0;
+        var priceLabel = minInr === maxInr ? '₹' + minInr.toLocaleString('en-IN') : '₹' + minInr.toLocaleString('en-IN') + ' – ₹' + maxInr.toLocaleString('en-IN');
+        var kwdLabel = minKwd === maxKwd ? minKwd + ' KWD' : minKwd + ' – ' + maxKwd + ' KWD';
         return '<tr>' +
           '<td data-label="Order">' + (t.order != null ? t.order : '') + '</td>' +
-          '<td data-label="Route">' + escapeHtml(t.routeFrom) + ' → ' + escapeHtml(t.routeTo) + '<br><span style="color:var(--muted);font-size:11.5px;">' + formatDate(t.flightDate) + ' · ' + escapeHtml(t.flightType || '') + '</span></td>' +
+          '<td data-label="Route">' + escapeHtml(t.routeFrom) + ' → ' + escapeHtml(t.routeTo) + '<br><span style="color:var(--muted);font-size:11.5px;">' + escapeHtml(datesLabel) + ' · ' + escapeHtml(t.flightType || '') + '</span></td>' +
           '<td data-label="Airline">' + escapeHtml(t.airline) + '</td>' +
-          '<td data-label="Price">₹' + Number(t.priceInr||0).toLocaleString('en-IN') + '<br><span style="color:var(--muted);font-size:11.5px;">' + t.priceKwd + ' KWD</span></td>' +
+          '<td data-label="Price">' + priceLabel + '<br><span style="color:var(--muted);font-size:11.5px;">' + kwdLabel + '</span></td>' +
           '<td data-label="Badge"><span class="pill ' + t.ribbonType + '">' + RIBBON_LABEL[t.ribbonType] + '</span></td>' +
           '<td data-label="Status"><span class="status-dot ' + (t.active !== false ? 'on' : 'off') + '"></span>' + (t.active !== false ? 'Visible' : 'Hidden') + '</td>' +
           '<td data-label="Actions"><div class="row-actions">' +
